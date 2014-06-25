@@ -4,15 +4,18 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cons = require('consolidate');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// assign the swig engine to .html files
+app.engine('html', cons.swig);
+// set .html as the default extension 
+app.set('view engine', 'html');
 
 app.use(favicon());
 app.use(logger('dev'));
