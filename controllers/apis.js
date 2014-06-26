@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router();
 var config = require("../config")();
 var debug = require('debug')(config.appName);
-var security = require("../security/authentication");
+var base = require("./base");
+
+// the api route controller.
 
 // authenticating api security.
-router.route("*").all(security.authApis);
+router.route("*").all(base.authApis);
 
 /* GET all apis interface. */
 router.get("/", function(req, res) {
@@ -44,10 +46,10 @@ router.route('/users/:user_id')
         res.json(req.user);
     })
     .post(function(req, res, next) {
-        next(new Error('not implemented'));
+        base.apiErrorOutput(res, 501, 'not implemented');
     })
     .delete(function(req, res, next) {
-        next(new Error('not implemented'));
+        base.apiErrorOutput(res, 501, 'not implemented');
     });
 
 module.exports = router;
