@@ -1,0 +1,28 @@
+{% extends "./html5.html" %}
+{% block title %}Swig Template Engine{% endblock %}
+
+{% block css %}
+	{% if DEV %}
+	  {% set css = 'less' %}
+	{% else %}
+	  {% set css = 'css' %}
+	{% endif %}
+<link rel="stylesheet{% if DEV %}/less{% endif %}" href="{{ baseurl }}/{{ css }}/master.{{ css }}">
+
+{% if DEV %}
+	<script src="{{ baseurl }}/scripts/libs/less-1.7.3.min.js"></script>
+{% endif %}
+{% endblock %}
+
+<!-- layout body fragment -->
+{% block body %}
+	
+
+{% endblock %}
+<!-- layout body fragment end-->
+
+
+{% block js %}
+	<script src="{{ baseurl }}/scripts/libs/jquery-1.11.1.min.js"></script>
+	<script src="{{ baseurl }}/scripts/master.js"></script>
+{% endblock %}
