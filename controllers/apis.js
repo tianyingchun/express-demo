@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var config = require("../config")();
 var debug = require('debug')(config.appName);
+var security = require("../security/authentication");
+
+// authenticating api security.
+router.route("*").all(security.authApis);
 
 /* GET all apis interface. */
 router.get("/", function(req, res) {
