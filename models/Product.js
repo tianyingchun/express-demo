@@ -1,7 +1,9 @@
 var Base = require("./Base");
 module.exports = new Base().extend({
-    pictureUrl: null,
     name: null,
+    pictureUrl: null,
     description: null,
-    unitPrice: 0
+    unitPrice: 0,
+    status: 1,
+    date: Date.now()
 });

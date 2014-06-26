@@ -1,5 +1,7 @@
+var _ = require("underscore");
 var config = {
     appName: "express-demo",
+    defaultDataProvider: "mongo",
     local: {
         mode: "local",
         port: 3000,
@@ -28,6 +30,9 @@ var config = {
 
 module.exports = function(mode) {
     var use = config[mode || process.argv[2] || 'local'] || config['local'];
-    use["appName"] = config.appName;
+    var use = _.extend(use, {
+        appName: config.appName,
+        defaultDataProvider: config.defaultDataProvider
+    });
     return use;
 };

@@ -3,7 +3,7 @@ function inherit(subclass, supperclass) {
     F.prototype = supperclass.prototype;
     subclass.prototype = new F();
     subclass.prototype.supper = supperclass.prototype;
-    subclass.prototpe.constructor = subclass;
+    subclass.prototype.constructor = subclass;
     if (supperclass.prototype.constructor == Object.prototype.constructor) {
         supperclass.prototype.constructor = supperclass;
     }
@@ -19,7 +19,7 @@ function setPrototype(ctor, properties) {
 
 /**
  * Base model class.
- * @param {} db 
+ * @param {} db
  */
 var Base = function(db) {
     this.db = db;

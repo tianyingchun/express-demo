@@ -25,5 +25,8 @@ module.exports = {
             info: null,
             message: message || "The request internal exception!"
         });
+    },
+    dbRequestSuccess: function(result) {
+        return result.failed || true;
     }
 }
