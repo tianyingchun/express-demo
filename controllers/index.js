@@ -22,6 +22,10 @@ router.get('/', function(req, res) {
             res.render('index', {
                 title: 'Express'
             });
+        } else {
+        	res.render('index', {
+                title: 'Error Express'
+            });
         }
     });
 });

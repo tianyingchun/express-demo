@@ -7,8 +7,8 @@ var security = require("../security/authentication");
 
 module.exports = {
     name: "base",
-    extend: function(child) {
-        return _.extend({}, this, child);
+    extend: function(source, target) {
+        return _.extend(source || {}, target);
     },
     authApis: function(req, res, next) {
         security.authApis(req, res, next);
