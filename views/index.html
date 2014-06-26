@@ -1,15 +1,9 @@
-{% extends "layouts/master.html" %}
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Express-demo</title>
-</head>
+{% extends "layouts/master.html" %} 
 
-<body>
-    <h1>Express-demo</h1>
-    <p>
-        Welcome to {{title}}
-    </p>
-</body>
+{% block body %}
 
-</html>
+<h1>Express-demo</h1>
+<p>
+    Welcome to {{title}}
+</p>
+{% endblock%}
