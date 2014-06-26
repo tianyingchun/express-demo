@@ -9,10 +9,10 @@ Swig Template Engine
 	{% else %}
 	  {% set css = 'css' %}
 	{% endif %}
-<link rel="stylesheet{% if DEV %}/less{% endif %}" href="{{ baseurl }}/styles/master.{{ css }}">
+<link rel="stylesheet{% if DEV %}/less{% endif %}" href="{{ baseurl }}/static/styles/master.{{ css }}">
 
 {% if DEV %}
-	<script src="{{ baseurl }}/scripts/libs/less-1.7.3.min.js"></script>
+	<script src="{{ baseurl }}/static/scripts/libs/less-1.7.3.min.js"></script>
 {% endif %}
 
 {% endblock %}
@@ -26,6 +26,6 @@ Swig Template Engine
 
 
 {% block js %}
-	<script src="{{ baseurl }}/scripts/libs/jquery-1.11.1.min.js"></script>
-	<script src="{{ baseurl }}/scripts/master.js"></script>
+	<script src="{{ baseurl }}/static/scripts/libs/jquery-1.11.1.min.js"></script>
+	<script src="{{ baseurl }}/static/scripts/master.js"></script>
 {% endblock %}

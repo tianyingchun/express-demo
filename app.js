@@ -23,7 +23,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 // app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'public')));
+
+
+// the default is "/" capture the static dir as all static resource root.
+app.use("/static", express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 // only requests to /users/* will be sent to our "router"
@@ -35,7 +38,8 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
+// debug version.
+app.set("env","development");
 /// error handlers
 
 // development error handler
