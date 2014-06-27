@@ -11,6 +11,7 @@ var productService = dataProvider.get("product");
 router.get('/create', createProduct);
 // match /product/list
 router.get('/list', listAllProducts);
+router.get('/', listAllProducts);
 
 
 /**

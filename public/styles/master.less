@@ -9,13 +9,83 @@ a {
 p:extend(a) {
     font-size:20px;
 }
+.button {
+    color: #fff;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: #3071a9;
+    border-color: #285e8e;
+    &:hover {
+        color: #fff;
+        background-color: #3071a9;
+        border-color: #285e8e;
+    }
+}
+.text-box {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    background-color: #fafafa;
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    &:focus {
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    }
+}
 .product-list {
-    .button {
-        height: 30px;
-        line-height: 30px;
-        background: #f0f0f0;
-        color:#999;
-        width: 300px;
+    .top {
+        overflow: hidden;
+        position: relative;
+        .product-code {
+            padding-right: 200px;
+            margin-bottom: 10px;
+            input {
+                width: 100%;
+                height: 30px;
+                line-height: 30px;
+            }
+        }
+        .add-to-orderlist {
+            position: absolute;
+            right: 5px;
+            top: 0;
+        }
+    }
+    .place-order {
+        float: right;
+        width: 140px;
+        margin-right: 4px;
+        margin-top:10px;
     }
     img {
         width: 60px;

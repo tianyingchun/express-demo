@@ -1,7 +1,13 @@
 {% extends "../layouts/master.html" %} {% block body %}
 
-<h1>所有的产品列表</h1>
+<h1>当前待下单的产品列表</h1>
 <div class="product-list">
+    <div class="top">
+        <div class="product-code">
+            <input type="text" class="text-box product-code-input" id="product-code">
+        </div>
+        <input type="button" class="button add-to-orderlist" value="添加到订单列表">
+    </div>
     <table>
         <tr>
             <th>产品名称</th>
@@ -22,6 +28,6 @@
         </tr>
         {% endfor %}
     </table>
-    <input class="button" type="submit" value="去下订单">
+    <input class="button place-order" type="submit" value="去下订单">
 </div>
 {% endblock%}
