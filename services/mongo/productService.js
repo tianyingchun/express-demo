@@ -73,6 +73,7 @@ function ProductProvider() {
 
 /**
  * Expose product service interface.
+ * all service must be exported an function.
  * @type {Object}
  */
 module.exports = function() {

@@ -5,10 +5,17 @@ var debug = require('debug')(config.appName);
 var base = require("./base");
 var dataProvider = require("../services/dataProvider");
 var productModel = require("../models/Product");
+
+// remote order service.
+var remoteOrderService = dataProvider.get("remote", "order");
+
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.render('index', {
-        title: 'Welcome Express'
+    var signaturedStr = remoteOrderService.placeOrder("123456789", 0.01, function(result) {
+        res.render('index', {
+            title: 'Welcome Express' + result
+        });
     });
+
 });
 module.exports = router;

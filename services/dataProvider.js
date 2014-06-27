@@ -5,6 +5,13 @@ var factory = function(providerType, serviceName) {
         case "mongo":
             service = require([".", "mongo", serviceName + "Service"].join("/"))();
             break;
+        case "remote":
+            service = require([".", "remote", serviceName + "Service"].join("/"))();
+            break;
+        default:
+            service = require([".", providerType, serviceName + "Service"].join("/"))();
+            break;
+
     }
     return service;
 };
