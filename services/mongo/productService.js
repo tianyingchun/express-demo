@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 var exception = require('../exception');
-var Schema = mongoose.Schema;
+var _ = require('underscore');
+var ProductModel = require("../../models/Product");
 
+var Schema = mongoose.Schema;
 // define product schema.
 var productSchema = new Schema({
     name: String,
@@ -15,10 +17,23 @@ var productSchema = new Schema({
     }
 });
 // product model.
-var Product = mongoose.model('product', productSchema);
+var MogoProduct = mongoose.model('product', productSchema);
 
 
 function ProductProvider() {
+    var modelConverter = function (product) {
+        var _model = new ProductModel();
+        _model= _.extend(_model, product);
+        return _model;
+    };
+    var listConverter = function (products) {
+        var result = [];
+        for (var i = 0; i < products.length; i++) {
+            result.push(modelConverter(products[i]));
+        };
+        return result;
+    };
+
     /**
      * api:  findProductById.
      * @param  {number} productId the
@@ -28,11 +43,14 @@ function ProductProvider() {
 
     };
     this.findAll = function(callback) {
-        var list = [{
-            name: 'sdfsf',
-            password: ''
-        }]
-        callback(list);
+        MogoProduct.find(function (err, products) {
+            if (err) {
+                callback(exception.getErrorModel(err));
+            } else {
+                var list = listConverter(products);
+                callback(list);
+            }
+        });
     };
     this.updateProduct = function(product) {
 
@@ -41,7 +59,7 @@ function ProductProvider() {
 
     };
     this.addProduct = function(product, callback) {
-        var product = new Product(product);
+        var product = new MogoProduct(product);
         product.save(function(err, model) {
             if (err) {
                 callback(exception.getErrorModel(err));

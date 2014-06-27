@@ -1,3 +1,4 @@
+var products = require('../controllers/products');
 var routes = require('../controllers/index');
 var users = require('../controllers/users');
 var apis = require('../controllers/apis');
@@ -21,6 +22,10 @@ var errorHandler500 = function(err, req, res, next) {
 module.exports = {
     init: function(app) {
         _app = app;
+
+        // route request for all /product/* into our productController.
+        app.use('/product', products);
+
         // for all restfull /api/* router, first validate apis security.
         app.use('/api', apis);
 

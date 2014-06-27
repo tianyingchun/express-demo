@@ -7,7 +7,7 @@ var security = require("../security/authentication");
 
 module.exports = {
     name: "base",
-    extend: function(source, target) {
+    mixin: function(source, target) {
         return _.extend(source || {}, target);
     },
     authApis: function(req, res, next) {

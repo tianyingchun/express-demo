@@ -14,13 +14,15 @@ var debug = require('debug')(config.appName);
 
 var app = express();
 
+// debug version.
+app.set("env", config.mode);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 // assign the swig engine to .html files
 app.engine('html', cons.swig);
 // set .html as the default extension 
 app.set('view engine', 'html');
-
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -28,9 +30,6 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 // the default is "/" capture the static dir as all static resource root.
 app.use("/static", express.static(path.join(__dirname, 'public')));
-
-// debug version.
-app.set("env", config.mode);
 
 // first check if mongodb has connect successfully!
 var db = mongoose.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/fastdelivery');

@@ -1,11 +1,45 @@
 body {
-    padding: 50px;
+    padding: 10px 50px;
     font: 14px"Lucida Grande", Helvetica, Arial, sans-serif;
 }
 a {
     color: #00B7FF;
     text-decoration: underline;
 }
-p:extend(a){
-	font-size:20px;
+p:extend(a) {
+    font-size:20px;
+}
+.product-list {
+    .button {
+        height: 30px;
+        line-height: 30px;
+        background: #f0f0f0;
+        color:#999;
+        width: 300px;
+    }
+    img {
+        width: 60px;
+        height: 60px;
+    }
+}
+table {
+    border: 1px solid #ccc;
+    width:100%;
+    border-collapse:collapse;
+    th, td {
+        border: 1px solid #ccc;
+        border-collapse:collapse;
+        padding: 5px;
+    }
+    th {
+        background: #f0f0f0;
+        height: 30px;
+        line-height: 30px;
+    }
+    td {
+        &.picture {
+            width: 60px;
+            height: 60px;
+        }
+    }
 }

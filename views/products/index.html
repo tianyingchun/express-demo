@@ -1,0 +1,27 @@
+{% extends "../layouts/master.html" %} {% block body %}
+
+<h1>所有的产品列表</h1>
+<div class="product-list">
+    <table>
+        <tr>
+            <th>产品名称</th>
+            <th>产品图片</th>
+            <th>产品描述</th>
+            <th>产品单价</th>
+            <th>数量</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td class="name">{{product.name}}</td>
+            <td class="picture">
+                <img src="http://gtms02.alicdn.com/tps/T1H.4lFOpdXXXXXXXX_!!0-item_pic.jpg_160x160.jpg" />
+            </td>
+            <td class="description">{{product.description}}</td>
+            <td class="unit-price">{{product.unitPrice}}</td>
+            <td class="qty">1</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <input class="button" type="submit" value="去下订单">
+</div>
+{% endblock%}
