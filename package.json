@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "start": "DEBUG=express-demo supervisor node app.js"
+        "start": "DEBUG=express-demo supervisor -w 'views,services,models,controllers,config' -e 'html|node|js' node app.js"
     },
     "dependencies": {
         "express": "~4.2.0",

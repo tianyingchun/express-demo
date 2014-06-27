@@ -7,13 +7,13 @@
 6 info start express-demo@0.0.1
 7 verbose unsafe-perm in lifecycle true
 8 info express-demo@0.0.1 Failed to exec start script
-9 error express-demo@0.0.1 start: `DEBUG=express-demo supervisor node app.js`
-9 error Exit status 8
+9 error express-demo@0.0.1 start: `DEBUG=express-demo supervisor -w views,services,models,controllers,config -e html|node|js node app.js`
+9 error Exit status 127
 10 error Failed at the express-demo@0.0.1 start script.
 10 error This is most likely a problem with the express-demo package,
 10 error not with npm itself.
 10 error Tell the author that this fails on your system:
-10 error     DEBUG=express-demo supervisor node app.js
+10 error     DEBUG=express-demo supervisor -w views,services,models,controllers,config -e html|node|js node app.js
 10 error You can get their info via:
 10 error     npm owner ls express-demo
 10 error There is likely additional logging output above.
