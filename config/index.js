@@ -1,5 +1,5 @@
 var _ = require("underscore");
-// merchant configuration
+// merchant configuration, Note: all parameters are case sensitive
 var merchantCfg = {
     cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}",
     merchantId: "900000000009", //商户号

@@ -1,6 +1,7 @@
 var util = require("./utils");
 var config = require("../../config/index")();
 var debug = require('debug')(config.appName);
+var exception = require('../exception');
 
 var placeOrder = function(mercOrderNo, orderAmount, callback) {
 
@@ -18,13 +19,24 @@ var placeOrder = function(mercOrderNo, orderAmount, callback) {
         sameOrderFlag: config.sameOrderFlag,
         orderTime: Date.now(),
         backEndUrl: config.backEndUrl,
-        frontEndUrl:config.frontEndUrl
+        frontEndUrl: config.frontEndUrl
     };
     var signatured = util.signRequest(params);
-    debug("signatured striing %s", signatured);
-    if (callback) {
-        callback(signatured);
-    }
+    // add signatured string.
+    params["signature"] = signatured;
+
+    debug("signatured string %s", signatured);
+    // HTTP POST request.
+
+    callback = callback || function noop() {};
+
+    util.formPost("http://localhost:3000/api", params, function success(data) {
+        debug("form post: ", data);
+        callback(data);
+    }, function error(err) {
+    	debug("error:", err)
+        callback(exception.getErrorModel(err));
+    });
 };
 
 var order = {

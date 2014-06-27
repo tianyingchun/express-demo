@@ -16,6 +16,7 @@
         "swig": "*",
         "mongodb": "1.4.7",
         "mongoose":"~3.8.4",
-        "underscore":"1.6.0"
+        "underscore":"1.6.0",
+        "request":"*"
     }
 }

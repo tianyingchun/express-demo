@@ -12,8 +12,9 @@ var remoteOrderService = dataProvider.get("remote", "order");
 /* GET home page. */
 router.get('/', function(req, res) {
     var signaturedStr = remoteOrderService.placeOrder("123456789", 0.01, function(result) {
+    	debug(JSON.stringify(result))
         res.render('index', {
-            title: 'Welcome Express' + result
+            title: 'Welcome Express' + JSON.stringify(result)
         });
     });
 

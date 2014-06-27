@@ -16,6 +16,13 @@ router.get("/", function(req, res) {
         password: "password"
     });
 });
+// for testing purpose.
+router.post("/", function(req, res) {
+    debug("testpost params:", JSON.stringify(req.body));
+    res.json({
+        result: 'testing post form'
+    });
+});
 
 router.param("user_id", function(req, res, next, id) {
     // sample user, would actually fetch from DB, etc...

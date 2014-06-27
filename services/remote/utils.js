@@ -4,14 +4,21 @@
  */
 
 var crypto = require('crypto');
-var config = require("../../config")();
-// serialize object.
+// serialize object.http://nodejs.org/api/querystring.html
 var querystring = require('querystring');
+// https://github.com/mikeal/request  Request -- Simplified HTTP client
+var request = require("request");
+
+var config = require("../../config")();
 var debug = require('debug')(config.appName);
 
 // signmethods mapping.
 var signMethodMapping = {
     "SHA-256": "sha256"
+};
+
+var isObject = function(params) {
+    return Object.prototype.toString.call(params) === "[object Object]"
 };
 /**
  * sort object keys asc, desc
@@ -20,7 +27,7 @@ var signMethodMapping = {
  * @return {object}        sorted object by keys.
  */
 var sort = function(params, sortType) {
-    if (Object.prototype.toString.call(params) === "[object Object]") {
+    if (isObject(params)) {
         if (typeof sortType == "undefined" || sortType === null) {
             // keep original params.
             return params;
@@ -47,8 +54,42 @@ var sort = function(params, sortType) {
         return {};
     }
 };
+/**
+ * Filter empty parameters key.
+ * @param  {object} params the parameters object.
+ * @return {object}        parameters all keys has value
+ */
+var filterEmptyParameters = function(params) {
+    if (isObject(params)) {
+        for (var p in params) {
+            if (params.hasOwnProperty(p)) {
+                if (!params[p]) {
+                    delete params[p];
+                }
+            }
+        }
+        return params;
+    } else {
+        return {};
+    }
+};
+/**
+ * Remove Not Required signature parameters.
+ */
+var filterNotRequiredSignatureParams = function(params) {
+    // remove sign method.
+    delete params["signMethod"];
+
+    return params;
+};
 var signRequest = function(requestParams) {
     var merchantKey = config.merchantKey;
+    // filter empty parameters.
+    requestParams = filterEmptyParameters(requestParams);
+
+    // remove not required signature parameters.
+    requestParams = filterNotRequiredSignatureParams(requestParams);
+
     // sort param key asc
     requestParams = sort(requestParams, 'asc');
 
@@ -64,8 +105,41 @@ var signRequest = function(requestParams) {
 
 };
 
+/**
+ * Simulator http post form request to access remote server.
+ * @param  {string} url     the remote server api url
+ * @param  {object} data    the post request data
+ * @param  {function} success the success callback
+ * @param  {function} failed  the faield callback
+ */
+var formPost = function(url, data, success, failed) {
+    var options = {
+        url: url,
+        method: "POST",
+        form: data,
+        headers: {
+            "charset": "utf-8"
+        },
+        encoding: "utf-8"
+    };
+    request(options, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // print result.
+            debug(body);
+            if (success) {
+                success(JSON.parse(body));
+            }
+        } else {
+            failed(error);
+        }
+    });
+};
 var util = {
     // return signatured request parameters string.
-    signRequest: signRequest
+    signRequest: signRequest,
+    // simulator http form post request.
+    formPost: function(url, data, success, failed) {
+        formPost(url, data, success, failed);
+    }
 };
 module.exports = util;
