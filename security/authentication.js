@@ -3,6 +3,7 @@
  */
 
 var config = require("../config")();
+var exception = require("../helpers/exception");
 var debug = require('debug')(config.appName);
 
 var apisValidationPassed = function(data) {
@@ -16,11 +17,9 @@ var authentication = {
         if (passed) {
             next();
         } else {
-            res.json(401, {
-                status: 401,
-                info: null,
-                message: "The api is unauthorized!"
-            });
+            var err = new Error('The api is unauthorized!');
+            err.status = 404;
+            exception.writeJSONError(res, err);
         }
     }
 };

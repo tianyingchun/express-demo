@@ -4,19 +4,24 @@ var express = require('express');
 var router = express.Router();
 var debug = require('debug')(config.appName);
 var dataProvider = require("../services/dataProvider");
-var productModel = require("../models/Product");
+// var productModel = require("../models/Product");
+var productService = dataProvider.get("product");
+
 
 // remote order service.
 var remoteOrderService = dataProvider.get("remote", "order");
 
-/* GET home page. */
+/* GET home page. list all products */
 router.get('/', function(req, res) {
-    var signaturedStr = remoteOrderService.placeOrder("123456789", 0.01, function(result) {
-    	debug(JSON.stringify(result))
-        res.render('index', {
-            title: 'Welcome Express' + JSON.stringify(result)
-        });
+	// list all products.
+    productService.findAll(function(result) {
+        if (base.dbRequestSuccess(result)) {
+            res.render('products/index', {
+                products: result
+            });
+        } else {
+            res.render('error', base.errorPageModel("find all products exception!", result.error));
+        }
     });
-
 });
 module.exports = router;

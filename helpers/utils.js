@@ -7,6 +7,7 @@ var crypto = require('crypto');
 // serialize object.http://nodejs.org/api/querystring.html
 var querystring = require('querystring');
 // https://github.com/mikeal/request  Request -- Simplified HTTP client
+// http://nodejs.cn/npm/request/
 var request = require("request");
 
 var config = require("../config")();

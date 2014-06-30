@@ -7,7 +7,7 @@ var debug = require('debug')(config.appName);
 // the api route controller.
 
 // authenticating api security.
-router.route("*").all(base.authApis);
+router.route("*").all(base.apiResponseHeaders, base.authApis);
 
 /* GET all apis interface. */
 router.get("/", function(req, res) {
@@ -27,7 +27,7 @@ router.post("/", function(req, res) {
 router.param("user_id", function(req, res, next, id) {
     // sample user, would actually fetch from DB, etc...
     req.user = {
-        id: id,     
+        id: id,
         name: 'TJ'
     };
     next();
@@ -53,10 +53,14 @@ router.route('/users/:user_id')
         res.json(req.user);
     })
     .post(function(req, res, next) {
-        base.apiErrorOutput(res, 501, 'not implemented');
+        var err = new Error("not implemented!");
+        err.status = 501;
+        base.apiErrorOutput(res, err);
     })
     .delete(function(req, res, next) {
-        base.apiErrorOutput(res, 501, 'not implemented');
+        var err = new Error("not implemented!");
+        err.status = 501;
+        base.apiErrorOutput(res, err);
     });
 
 module.exports = router;

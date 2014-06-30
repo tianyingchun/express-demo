@@ -1,5 +1,5 @@
 /**
- * uniform exception handler 
+ * uniform exception handler
  * @type {Object}
  */
 module.exports = {
@@ -8,5 +8,14 @@ module.exports = {
             failed: true,
             error: err
         };
+    },
+    writeJSONError: function(res, error) {
+        var status = error.status || 500;
+        var message = error.message || "The request internal exception!";
+        res.json(status, {
+            status: status,
+            info: null,
+            message: message
+        });
     }
 }
