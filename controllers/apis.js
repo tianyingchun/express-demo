@@ -3,6 +3,7 @@ var base = require("./base");
 var express = require('express');
 var router = express.Router();
 var debug = require('debug')(config.appName);
+var dataProvider = require("../services/dataProvider");
 
 // the api route controller.
 
@@ -12,10 +13,35 @@ router.route("*").all(base.apiResponseHeaders, base.authApis);
 /* GET all apis interface. */
 router.get("/", function(req, res) {
     res.json({
-        title: "title",
-        password: "password"
+        title: "Nothing",
+        body: "default apis."
     });
 });
+
+/** 
+ * API: match /product/:id
+ */
+router.param("product_id", function(req, res, next, id) {
+    // sample user, would actually fetch from DB, etc...
+    var productService = dataProvider.get("product");
+    productService.findProductById(id, function(result) {
+        if (!base.dbRequestSuccess(result)) {
+            req.product = null;
+            next();
+        } else {
+            var err = new Error("can't find corresponding product!");
+            err.status = 500;
+            base.apiErrorOutput(res, err);
+        }
+    });
+});
+router.get("/product/:product_id", function(req, res) {
+    var product = req.product;
+    base.apiOkOutput(res, product);
+});
+
+
+
 // for testing purpose.
 router.post("/", function(req, res) {
     debug("testpost params:", JSON.stringify(req.body));

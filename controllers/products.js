@@ -23,6 +23,7 @@ router.get('/', listAllProducts);
 function listAllProducts(req, res) {
     productService.findAll(function(result) {
         if (base.dbRequestSuccess(result)) {
+            
             res.render('products/index', {
                 products: result
             });

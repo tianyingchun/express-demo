@@ -1,7 +1,7 @@
 {% extends "../layouts/master.html" %} {% block body %}
 
 <h1 class="header">
-    <span class="title">当前待下单的产品列表</span>
+    <span class="title">当前的产品列表</span>
     <div class="button-list">
         <input type="button" onclick="location.href='/product/create'" class="button add-new-product" value="添加新产品">
     </div>
@@ -13,16 +13,18 @@
         </div>
         <input type="button" class="button add-to-orderlist" value="添加到订单列表">
     </div>
-    <table>
+    <table id="product-list">
         <tr>
             <th>产品名称</th>
             <th>产品图片</th>
             <th>产品描述</th>
             <th>产品单价</th>
             <th>数量</th>
+            <th>加购物车</th>
+
         </tr>
         {% for product in products %}
-        <tr>
+        <tr data-id="{{eval(product._id)}}">
             <td class="name">{{product.name}}</td>
             <td class="picture">
                 <img src="http://gtms02.alicdn.com/tps/T1H.4lFOpdXXXXXXXX_!!0-item_pic.jpg_160x160.jpg" />
@@ -30,9 +32,93 @@
             <td class="description">{{product.description}}</td>
             <td class="unit-price">{{product.unitPrice}}</td>
             <td class="qty">1</td>
+            <td class="action">
+                <button class="button" data-id="{{eval(product._id)}}">添加</button>
+            </td>
         </tr>
         {% endfor %}
     </table>
-    <input class="button place-order" type="submit" value="去下订单">
+
+    <hr>
+    <table id="order-products">
+        <tr>
+            <th>产品名称</th>
+            <th>产品图片</th>
+            <th>产品描述</th>
+            <th>产品单价</th>
+            <th>数量</th>
+            <th>删除</th>
+        </tr>
+        <tr class="lastline">
+            <td colspan="6">
+                <span class="message">当前还没有添加任何产品到购物车！</span>
+            </td>
+        </tr>
+    </table>
+    <div id="subtotal" class="sub-total">
+        <span class="label">小计:</span>
+        <span class="subtotal-value"></span>
+    </div>
+    <input class="button place-order" id="placeanorder" type="submit" value="去下订单">
 </div>
+{% endblock%} {% block scripts%}
+<script type="text/javascript">
+$(function() {
+    var $orderproducts = $("#order-products");
+    var $productlist = $("#product-list");
+    var $subtotal = $("#subtotal");
+
+    function showMessage() {
+        if ($orderproducts.find("tr").length > 0) {
+            $orderproducts.find("tr.lastline").hide();
+            $subtotal.show();
+        } else {
+            $subtotal.hide();
+        }
+    }
+
+    // calculate cart subtotal.
+
+    function calSubtotal() {
+        var $items = $orderproducts.find("tr[data-id]");
+        var sum = 0;
+        $items.each(function(index, item) {
+            var $item = $(item);
+            var qty = parseInt($item.find(".qty").text());
+            var unitPrice = parseFloat($item.find(".unit-price").text());
+            sum += qty * unitPrice;
+        });
+        $subtotal.find(".subtotal-value").text(sum.toFixed(2));
+    }
+    // remove product item from shopping cart.
+    $orderproducts.on("click", "button.button", function(e) {
+        var pId = $(this).data("id");
+        $orderproducts.find("tr[data-id='" + pId + "']").remove();
+        calSubtotal();
+    });
+    $productlist.on("click", "button.button", function(e) {
+        var pId = $(this).data("id");
+        var $tr = $productlist.find("tr[data-id='" + pId + "']");
+        var $newTr = $tr.clone();
+        $newTr.find(".button").text("删除");
+        var $hasExist = $orderproducts.find("tr[data-id='" + pId + "']");
+        if ($hasExist.length) {
+            var qty = parseInt($hasExist.find(".qty").text());
+            $hasExist.find(".qty").text(++qty);
+        } else {
+            $orderproducts.find("tr.lastline").before($newTr);
+        }
+        showMessage();
+        calSubtotal();
+    });
+    $("#placeanorder").on("click", function(e) {
+        var $cartList = $orderproducts.find("tr");
+        var pIds = [];
+        $cartList.each(function(index, item) {
+            pIds.push($(item).data("id"));
+        });
+        alert("place an order!" + pIds.join('---'));
+    });
+});
+</script>
 {% endblock%}

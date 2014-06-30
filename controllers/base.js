@@ -3,7 +3,7 @@
  * @type {[type]}
  */
 var security = require("../security/authentication");
-var exception =require("../helpers/exception");
+var exception = require("../helpers/exception");
 var _ = require("underscore");
 
 module.exports = {
@@ -21,6 +21,12 @@ module.exports = {
      */
     apiErrorOutput: function(res, error) {
         exception.writeJSONError(res, error);
+    },
+    apiOkOutput: function(res, info) {
+        res.json({
+            retCode: 1,
+            info: info
+        });
     },
     /**
      * capture all api request, and attach response content-Type:'application/json' and other headers

@@ -21,12 +21,12 @@ var MogoProduct = mongoose.model('product', productSchema);
 
 
 function ProductProvider() {
-    var modelConverter = function (product) {
+    var modelConverter = function(product) {
         var _model = new ProductModel();
-        _model= _.extend(_model, product);
+        _model = _.extend(_model, product);
         return _model;
     };
-    var listConverter = function (products) {
+    var listConverter = function(products) {
         var result = [];
         for (var i = 0; i < products.length; i++) {
             result.push(modelConverter(products[i]));
@@ -40,10 +40,19 @@ function ProductProvider() {
      * @return {product}   the instance of product model.
      */
     this.findProductById = function(productId) {
-
+        MogoProduct.find({
+            _id: productId
+        }, function(err, product) {
+            if (err) {
+                callback(exception.getErrorModel(err));
+            } else {
+                var product = modelConverter(product);
+                callback(product);
+            }
+        });
     };
     this.findAll = function(callback) {
-        MogoProduct.find(function (err, products) {
+        MogoProduct.find(function(err, products) {
             if (err) {
                 callback(exception.getErrorModel(err));
             } else {

@@ -1,5 +1,6 @@
 var Base = require("./Base");
 module.exports = new Base().extend({
+	_id: null,
     name: null,
     pictureUrl: null,
     description: null,

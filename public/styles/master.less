@@ -78,6 +78,8 @@ p:extend(a) {
 }
 /*product list module*/
  .product-list {
+    overflow:hidden;
+    padding: 0 0 20px 0;
     .top {
         overflow: hidden;
         position: relative;
@@ -154,7 +156,7 @@ p:extend(a) {
         margin-left: 100px;
         float:left;
     }
-    .message{
+    .message {
         float:left;
         margin-left: 10px;
     }
@@ -167,6 +169,7 @@ table {
         border: 1px solid #ccc;
         border-collapse:collapse;
         padding: 5px;
+        vertical-align: top;
     }
     th {
         background: #f0f0f0;
@@ -174,9 +177,41 @@ table {
         line-height: 30px;
     }
     td {
+        &.name {
+            width: 150px;
+        }
+        &.action {
+            width: 60px;
+            .button {
+                height: 30px;
+            }
+        }
         &.picture {
             width: 60px;
             height: 60px;
         }
     }
+}
+#order-products {
+    border-color:#EE654B;
+    th {
+        background: #EE654B;
+        color:#fff;
+    }
+    th, td {
+        border-color:#EE654B;
+    }
+    .message {
+        color:red;
+        font-size: 14px;
+        padding: 5px 0;
+        display:block;
+    }
+}
+.sub-total {
+    text-align: right;
+    padding: 20px;
+    line-height: 30px;
+    font-size: 14px;
+    display:none;
 }
