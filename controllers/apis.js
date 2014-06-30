@@ -1,8 +1,8 @@
+var config = require("../config")();
+var base = require("./base");
 var express = require('express');
 var router = express.Router();
-var config = require("../config")();
 var debug = require('debug')(config.appName);
-var base = require("./base");
 
 // the api route controller.
 
@@ -27,7 +27,7 @@ router.post("/", function(req, res) {
 router.param("user_id", function(req, res, next, id) {
     // sample user, would actually fetch from DB, etc...
     req.user = {
-        id: id,
+        id: id,     
         name: 'TJ'
     };
     next();

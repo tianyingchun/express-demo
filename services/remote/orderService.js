@@ -1,7 +1,7 @@
-var util = require("./utils");
+var util = require("../../helpers/utils");
 var config = require("../../config/index")();
+var exception = require('../../helpers/exception');
 var debug = require('debug')(config.appName);
-var exception = require('../exception');
 
 var placeOrder = function(mercOrderNo, orderAmount, callback) {
 

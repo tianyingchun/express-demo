@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var exception = require('../exception');
+var exception = require('../../helpers/exception');
 var _ = require('underscore');
 var ProductModel = require("../../models/Product");
 

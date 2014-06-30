@@ -9,7 +9,7 @@ var querystring = require('querystring');
 // https://github.com/mikeal/request  Request -- Simplified HTTP client
 var request = require("request");
 
-var config = require("../../config")();
+var config = require("../config")();
 var debug = require('debug')(config.appName);
 
 // signmethods mapping.
@@ -127,6 +127,7 @@ var formPost = function(url, data, success, failed) {
             // print result.
             debug(body);
             if (success) {
+                // success(querystring.parse(body));
                 success(JSON.parse(body));
             }
         } else {

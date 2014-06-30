@@ -2,8 +2,8 @@
  * Provider base util function for all child controller.
  * @type {[type]}
  */
-var _ = require("underscore");
 var security = require("../security/authentication");
+var _ = require("underscore");
 
 module.exports = {
     name: "base",

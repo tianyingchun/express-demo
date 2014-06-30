@@ -1,6 +1,6 @@
+var config = require("../config")();
 var express = require('express');
 var router = express.Router();
-var config = require("../config")();
 var debug = require('debug')(config.appName);
 
 /* GET users listing. */
