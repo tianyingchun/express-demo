@@ -1,6 +1,11 @@
 {% extends "../layouts/master.html" %} {% block body %}
 
-<h1>当前待下单的产品列表</h1>
+<h1 class="header">
+    <span class="title">当前待下单的产品列表</span>
+    <div class="button-list">
+        <input type="button" onclick="location.href='/product/create'" class="button add-new-product" value="添加新产品">
+    </div>
+</h1>
 <div class="product-list">
     <div class="top">
         <div class="product-code">

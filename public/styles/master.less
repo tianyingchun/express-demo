@@ -62,7 +62,22 @@ p:extend(a) {
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
     }
 }
-.product-list {
+.header {
+    position: relative;
+    .button-list {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 200px;
+        .add-new-product {
+            position: absolute;
+            right: 7px;
+            width: 123px;
+        }
+    }
+}
+/*product list module*/
+ .product-list {
     .top {
         overflow: hidden;
         position: relative;
@@ -90,6 +105,58 @@ p:extend(a) {
     img {
         width: 60px;
         height: 60px;
+    }
+}
+/*global message*/
+ .message {
+    display:none;
+    color:red;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 10px 0;
+    &.ok {
+        display:block;
+    }
+}
+/* product create module*/
+ .product-create {
+    margin: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    label {
+        font-size: 14px;
+        font-weight: bold;
+        float:left;
+        width: 80px;
+        padding-right: 20px;
+        display:block;
+        height: 60px;
+        line-height: 60px;
+    }
+    .checkbox {
+        float:left;
+        margin-top: 25px;
+    }
+    .item {
+        overflow:hidden;
+        clear:both;
+    }
+    .text-box {
+        margin: 10px 0;
+        float:left;
+        width: 70%;
+    }
+    .description {
+        height: 70px;
+    }
+    .create-product {
+        width: 200px;
+        margin-left: 100px;
+        float:left;
+    }
+    .message{
+        float:left;
+        margin-left: 10px;
     }
 }
 table {

@@ -1,0 +1,48 @@
+{% extends "../layouts/master.html" %} {% block body %}
+
+<h1 class="header">
+    <span class="title">请输入新产品详情</span>
+    <div class="button-list">
+        <input type="button" onclick="window.location.href='/product/list'" class="button add-new-product" value="订单列表">
+    </div>
+</h1>
+<div class="product-create">
+    <form action="/product/create" method="post" enctype="application/x-www-form-urlencoded">
+        <div class="item">
+            <label for="name">
+                产品名称:
+            </label>
+            <input class="text-box" type="text" name="name" id="name">
+        </div>
+        <div class="item">
+            <label for="pictureUrl">
+                产品图片:
+            </label>
+            <input class="text-box" type="text" value="http://gtms02.alicdn.com/tps/T1H.4lFOpdXXXXXXXX_!!0-item_pic.jpg_160x160.jpg" name="pictureUrl">
+        </div>
+        <div class="item">
+            <label for="unitPrice">
+                产品单价:
+            </label>
+            <input class="text-box" type="number" step="0.01" min="0" name="unitPrice">
+        </div>
+        <div class="item">
+            <label for="isAvailable">
+                产品是否可用:
+            </label>
+            <input type="checkbox" class="checkbox" checked="checked" name="isAvailable">
+        </div>
+        <div class="item">
+            <label for="description">
+                产品描述:
+            </label>
+            <textarea class="description text-box" name="description"></textarea>
+        </div>
+        <div class="item">
+            <input type="submit" class="button create-product" value="创建">
+            <div class="message {{success}}">添加新产品成功</div>
+        </div>
+    </form>
+</div>
+
+{% endblock%}

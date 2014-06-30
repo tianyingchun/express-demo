@@ -8,7 +8,8 @@ var ProductModel = require("../models/Product");
 var productService = dataProvider.get("product");
 
 // match /product/create
-router.get('/create', createProduct);
+router.get('/create', createProductUI);
+router.post('/create', createProduct);
 // match /product/list
 router.get('/list', listAllProducts);
 router.get('/', listAllProducts);
@@ -16,21 +17,28 @@ router.get('/', listAllProducts);
 
 /**
  * List all products
- * 
+ *
  */
+
 function listAllProducts(req, res) {
     productService.findAll(function(result) {
         if (base.dbRequestSuccess(result)) {
-            res.render('products/index', {products:result});
-        } else {
-            res.render('error', {
-            	message: "find all product exception!",
-                error: result.error
+            res.render('products/index', {
+                products: result
             });
+        } else {
+            res.render('error', base.errorPageModel("find all product exception!", result.error));
         }
     });
 }
 
+/**
+ * For create new product ui page.
+ */
+
+function createProductUI(req, res) {
+    res.render("products/create", {});
+};
 /**
  * Create new products.
  * @param  {request} req http request.
@@ -40,25 +48,33 @@ function listAllProducts(req, res) {
 
 function createProduct(req, res) {
     var _product = new ProductModel();
+    var body = req.body || {};
+    var name = body.name;
+    var pictureUrl = body.pictureUrl;
+    var description = body.description;
+    var unitPrice = parseFloat(body.unitPrice);
+    var status = body.isAvailable && body.isAvailable == "on" ? 1 : 0;
+
     _product = base.mixin(_product, {
-        name: "testing..",
-        pictureUrl: "http://www.baidu.com/",
-        description: "testing description",
-        unitPrice: 0,
-        status: 1,
+        name: name,
+        pictureUrl: pictureUrl,
+        description: description,
+        unitPrice: unitPrice,
+        status: status,
         date: Date.now()
     });
+    // save product infomation to database.
     productService.addProduct(_product, function(result) {
         if (base.dbRequestSuccess(result)) {
-            res.render('index', {
-                title: 'Express'
+            res.render("products/create", {
+                success: "ok",
+                data: result
             });
         } else {
-            res.render('index', {
-                title: 'Error Express'
-            });
+            res.render('error', base.errorPageModel("save new product to db failed!", result.error));
         }
     });
+
 }
 
 module.exports = router;
