@@ -113,11 +113,31 @@ $(function() {
     });
     $("#placeanorder").on("click", function(e) {
         var $cartList = $orderproducts.find("tr");
-        var pIds = [];
+        var orderCfg = [];
         $cartList.each(function(index, item) {
-            pIds.push($(item).data("id"));
+            var $item = $(item);
+            var purchaseItem = {
+                pId: $item.data("id"),
+                qty: parseInt($item.find(".qty").text())
+            };
+            if (purchaseItem.pId) {
+                orderCfg.push(purchaseItem);
+            }
         });
-        alert("place an order!" + pIds.join('---'));
+        console.log("orderCfg",orderCfg)
+        $.ajax({
+            type: "POST",
+            url: "/api/order/create", 
+            data: JSON.stringify(orderCfg),
+            dataType: "json",
+            contentType : 'application/json',
+            success: function(result) {
+                console.log(result);
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
     });
 });
 </script>

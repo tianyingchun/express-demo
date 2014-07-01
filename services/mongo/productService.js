@@ -39,7 +39,7 @@ function ProductProvider() {
      * @param  {number} productId the
      * @return {product}   the instance of product model.
      */
-    this.findProductById = function(productId) {
+    this.findProductById = function(productId, callback) {
         MogoProduct.find({
             _id: productId
         }, function(err, product) {
@@ -48,6 +48,20 @@ function ProductProvider() {
             } else {
                 var product = modelConverter(product);
                 callback(product);
+            }
+        });
+    };
+    this.findProductsByIds = function(productIds, callback) {
+        MogoProduct.find({
+            _id: {
+                $in: productIds
+            }
+        }, function(err, products) {
+            if (err) {
+                callback(exception.getErrorModel(err));
+            } else {
+                var list = listConverter(products);
+                callback(list);
             }
         });
     };

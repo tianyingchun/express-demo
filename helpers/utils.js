@@ -142,6 +142,11 @@ var util = {
     // simulator http form post request.
     formPost: function(url, data, success, failed) {
         formPost(url, data, success, failed);
+    },
+    uuid: function() {
+        //Date.now();
+        var newDate = new Date;
+        return newDate.getTime();
     }
 };
 module.exports = util;

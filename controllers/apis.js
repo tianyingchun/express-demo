@@ -1,3 +1,4 @@
+var util = require("util");
 var config = require("../config")();
 var base = require("./base");
 var express = require('express');
@@ -40,7 +41,23 @@ router.get("/product/:product_id", function(req, res) {
     base.apiOkOutput(res, product);
 });
 
+/**
+ * create new order saved it to db
+ */
+router.post("/order/create", function(req, res) {
+    var orderCfg = req.body;
+    debug("`/order/create` params:", JSON.stringify(orderCfg));
+    var orderService = dataProvider.get("order");
 
+    orderService.create(orderCfg, function(result) {
+        util.debug("create new order done!!!!");
+        if(base.dbRequestSuccess(result)) {
+            base.apiOkOutput(res, result);
+        } else {
+            base.apiErrorOutput(res, result.error);
+        }
+    });
+});
 
 // for testing purpose.
 router.post("/", function(req, res) {

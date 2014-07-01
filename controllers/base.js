@@ -23,10 +23,14 @@ module.exports = {
         exception.writeJSONError(res, error);
     },
     apiOkOutput: function(res, info) {
-        res.json({
-            retCode: 1,
-            info: info
-        });
+        if (this.dbRequestSuccess(info)) {
+            res.json({
+                retCode: 1,
+                info: info
+            });
+        } else {
+            this.apiErrorOutput(res, info.error);
+        }
     },
     /**
      * capture all api request, and attach response content-Type:'application/json' and other headers
