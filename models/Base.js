@@ -28,8 +28,13 @@ var Base = function(db) {
 Base.prototype = {
     constructor: Base,
     extend: function(properties) {
-        var child = setPrototype(function() {}, properties);
-        return inherit(child, this.constructor);
+        var child = inherit(function child() {}, this.constructor);
+        for (var p in properties) {
+            if (properties.hasOwnProperty(p)) {
+                child.prototype[p] = properties[p];
+            }
+        }
+        return child;
     },
     setDB: function(db) {
         this.db = db;

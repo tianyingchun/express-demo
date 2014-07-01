@@ -51,7 +51,22 @@ router.post("/order/create", function(req, res) {
 
     orderService.create(orderCfg, function(result) {
         util.debug("create new order done!!!!");
-        if(base.dbRequestSuccess(result)) {
+        if (base.dbRequestSuccess(result)) {
+            base.apiOkOutput(res, result);
+        } else {
+            base.apiErrorOutput(res, result.error);
+        }
+    });
+});
+// place an 1qianbao order.
+router.post("/order/1qianbao/placeorder", function(req, res) {
+    var remoteOrder = dataProvider.get("remote", "order");
+    var orderNo = Date.now();//req.body;
+    var orderAmount = 10;
+    console.log("order No:", orderNo);
+    // remote place an order.
+    remoteOrder.placeOrder(orderNo, orderAmount, function(result) {
+        if (base.dbRequestSuccess(result)) {
             base.apiOkOutput(res, result);
         } else {
             base.apiErrorOutput(res, result.error);

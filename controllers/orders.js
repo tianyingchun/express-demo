@@ -11,7 +11,6 @@ var orderService = dataProvider.get("order");
 router.get('/list', listAllOrders);
 
 function listAllOrders(req, res, next) {
-    debug("ddddddddd")
     orderService.findAll(function(orders) {
         if (base.dbRequestSuccess(orders)) {
             res.render('orders/list', {

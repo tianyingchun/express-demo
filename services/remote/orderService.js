@@ -1,6 +1,8 @@
 var util = require("../../helpers/utils");
 var config = require("../../config/index")();
 var exception = require('../../helpers/exception');
+var querystring = require('querystring');
+var _ = require("underscore");
 var debug = require('debug')(config.appName);
 
 var placeOrder = function(mercOrderNo, orderAmount, callback) {
@@ -17,24 +19,28 @@ var placeOrder = function(mercOrderNo, orderAmount, callback) {
         orderAmount: orderAmount, //"0.01",
         orderCurrency: config.orderCurrency,
         sameOrderFlag: config.sameOrderFlag,
-        orderTime: Date.now(),
+        orderTime: "20140701180308", //yyyyMMddHHmmss Date.now(),
         backEndUrl: config.backEndUrl,
         frontEndUrl: config.frontEndUrl
     };
+    // new params to remote server.
+    var params_New = _.clone(params);
+
     var signatured = util.signRequest(params);
-    // add signatured string.
-    params["signature"] = signatured;
 
     debug("signatured string %s", signatured);
+
+    // add signatured string.
+    params_New["signature"] = signatured;
     // HTTP POST request.
 
     callback = callback || function noop() {};
 
-    util.formPost("http://localhost:3000/api", params, function success(data) {
-        debug("form post: ", data);
+    util.formPost(config.orderRemoteUri, params_New, function success(data) {
+        debug("form post: ", JSON.stringify(data));
         callback(data);
     }, function error(err) {
-    	debug("error:", err)
+        debug("error:", err)
         callback(exception.getErrorModel(err));
     });
 };

@@ -61,7 +61,12 @@
         <span class="label">小计:</span>
         <span class="subtotal-value"></span>
     </div>
+    <div class="order_id">
+        <input type="hidden" id="order-id" value="">
+    </div>
     <input class="button place-order" id="placeanorder" type="submit" value="去下订单">
+    <input class="button place-order" id="placeorder1qianbao" type="submit" value="1钱包下单">
+
 </div>
 {% endblock%} {% block scripts%}
 <script type="text/javascript">
@@ -126,14 +131,37 @@ $(function() {
                 orderCfg.push(purchaseItem);
             }
         });
-        console.log("orderCfg", orderCfg)
+        if (orderCfg.length) {
+            $.ajax({
+                type: "POST",
+                url: "/api/order/create",
+                data: JSON.stringify(orderCfg),
+                dataType: "json",
+                contentType: 'application/json',
+                success: function(result) {
+                    if (result.retCode == 1) {
+                        var orderId = result.info && result.info.orderId || 0;
+                        $("#order-id").val(orderId);
+                        $("#placeorder1qianbao").show();
+                    }
+                    console.log(result);
+                },
+                error: function(result) {
+                    console.log(result);
+                }
+            });
+        } else {
+            alert("当前，购物车没有产品！")
+        }
+    });
+    $("#placeorder1qianbao").on("click", function(e) {
         $.ajax({
             type: "POST",
-            url: "/api/order/create",
-            data: JSON.stringify(orderCfg),
+            url: "/api/order/1qianbao/placeorder",
+            data: Date.now(),
             dataType: "json",
             contentType: 'application/json',
-            success: function(result) {
+            success: function(result) { 
                 console.log(result);
             },
             error: function(result) {

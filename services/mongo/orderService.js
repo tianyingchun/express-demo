@@ -109,6 +109,9 @@ function OrderProvider() {
                     var products = orderDetail.products;
                     // place an order save it to database.
                     var order = new OrderModel();
+                    console.log("order1:", order.status)
+
+
                     order.orderId = require("../../helpers/utils").uuid();
                     order.totalAmount = totalAmount.toFixed(2);
                     order.products = products;

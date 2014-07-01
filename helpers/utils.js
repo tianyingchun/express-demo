@@ -114,6 +114,7 @@ var signRequest = function(requestParams) {
  * @param  {function} failed  the faield callback
  */
 var formPost = function(url, data, success, failed) {
+    console.log("form request data:", data);
     var options = {
         url: url,
         method: "POST",
@@ -126,10 +127,10 @@ var formPost = function(url, data, success, failed) {
     request(options, function(error, response, body) {
         if (!error && response.statusCode == 200) {
             // print result.
-            debug(body);
+            debug("form post result body---->", body);
             if (success) {
-                // success(querystring.parse(body));
-                success(JSON.parse(body));
+                success(querystring.parse(body));
+                // success(JSON.parse(body));
             }
         } else {
             failed(error);

@@ -1,9 +1,10 @@
 var _ = require("underscore");
 // merchant configuration, Note: all parameters are case sensitive
 var merchantCfg = {
-    cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}",
-    merchantId: "900000000009", //商户号
-    merchantKey: "9286ed7a54e94c5e96820896d02c412d", //商户约定密钥
+    orderRemoteUri:"https://mapi.1qianbao.com/ffastpay",//http://test2-www.1qianbao.com:4443/ffastpay", // 1qianbao place order request.
+    cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}", // cacheier request.
+    merchantId: "900000000256",//900000000009", //商户号
+    merchantKey: "a85f52756a13402191155ee8a7b3f309",//9286ed7a54e94c5e96820896d02c412d", //商户约定密钥
     charset: "UTF-8",
     version: "1.0.0", //消息版本号
     signMethod: "SHA-256",
