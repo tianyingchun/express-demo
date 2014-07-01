@@ -3,6 +3,8 @@
 <h1 class="header">
     <span class="title">当前的产品列表</span>
     <div class="button-list">
+        <input type="button" onclick="location.href='/order/list'" class="button list-all-orders" value="查看已下订单">
+
         <input type="button" onclick="location.href='/product/create'" class="button add-new-product" value="添加新产品">
     </div>
 </h1>
@@ -124,13 +126,13 @@ $(function() {
                 orderCfg.push(purchaseItem);
             }
         });
-        console.log("orderCfg",orderCfg)
+        console.log("orderCfg", orderCfg)
         $.ajax({
             type: "POST",
-            url: "/api/order/create", 
+            url: "/api/order/create",
             data: JSON.stringify(orderCfg),
             dataType: "json",
-            contentType : 'application/json',
+            contentType: 'application/json',
             success: function(result) {
                 console.log(result);
             },

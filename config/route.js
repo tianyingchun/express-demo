@@ -2,6 +2,7 @@ var products = require('../controllers/products');
 var routes = require('../controllers/index');
 var users = require('../controllers/users');
 var apis = require('../controllers/apis');
+var orders =require("../controllers/orders");
 var exception = require("../helpers/exception");
 
 var _app = null;
@@ -34,6 +35,9 @@ module.exports = {
 
         // route request for all /product/* into our productController.
         app.use('/product', products);
+
+        // route request for all /order/* into our ordercontroller.
+        app.use('/order', orders);
 
         // for all restfull /api/* router, first validate apis security.
         app.use('/api', apis);

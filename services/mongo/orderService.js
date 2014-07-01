@@ -11,6 +11,7 @@ var orderSchema = new Schema({
         type: String,
         required: true
     },
+    status: String,
     totalAmount: String,
     createDate: {
         type: Date,
@@ -22,12 +23,21 @@ var orderSchema = new Schema({
 var MogoOrder = mongoose.model('order', orderSchema);
 
 function OrderProvider() {
+    // generate real "/models/Order" model.
     var modelConverter = function(order) {
         var _model = new OrderModel();
         _model = _.extend(_model, order);
+        _model.createDate = _model.createDate.toString()
         return _model;
     };
 
+    var listConverter = function(orders) {
+        var result = [];
+        for (var i = 0; i < orders.length; i++) {
+            result.push(modelConverter(orders[i]));
+        };
+        return result;
+    };
     var fetchProductQty = function(id, orderCfg) {
         var qty = 0;
         for (var i = 0; i < orderCfg.length; i++) {
@@ -63,7 +73,7 @@ function OrderProvider() {
                         var subtotal = parseFloat(item.unitPrice) * qty;
                         total += subtotal;
                         products.push({
-                            productId: item._id.toString(),//convert objectId to id string.
+                            productId: item._id.toString(), //convert objectId to id string.
                             name: item.name,
                             description: item.description,
                             unitPrice: item.unitPrice,
@@ -124,6 +134,15 @@ function OrderProvider() {
     };
     this.findOrderById = function(orderId) {
         // body...
+    };
+    this.findAll = function(callback) {
+        MogoOrder.find(function(err, orders) {
+            if (err) {
+                callback(exception.getErrorModel(err));
+            } else {
+                callback(listConverter(orders));
+            }
+        });
     };
 };
 

@@ -1,0 +1,34 @@
+{% extends "../layouts/master.html" %} {% block body %}
+
+<h1 class="header">
+    <span class="title">当前的订单列表</span>
+    <div class="button-list">
+        <input type="button" onclick="location.href='/product/list'" class="button list-all-products" value="查看所有产品">
+
+        <input type="button" onclick="location.href='/product/create'" class="button add-new-product" value="添加新产品">
+    </div>
+</h1>
+<div class="order-list">
+    <table id="product-list">
+        <tr>
+            <th>订单ID</th>
+            <th>订单总额</th>
+            <th>订单状态</th>
+            <th>订单时间</th>
+        </tr>
+        {% for order in orders %}
+        <tr data-id="{{order.orderId}}">
+            <td class="order-id">{{order.orderId}}</td>
+            <td class="total-amount">{{order.totalAmount}}</td>
+            <td class="order-status">
+                {%if order.status =="initalize" %} 初始化 {%endif%}
+                 {%if order.status =="paid" %} 已付款 {%endif%} 
+                 {%if order.status =="completed" %} 已经完成 {%endif%}
+
+            </td>
+            <td class="order-date">{{order.createDate}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock%} {% block scripts%} {% endblock%}
