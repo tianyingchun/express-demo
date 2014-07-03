@@ -9,7 +9,10 @@ var querystring = require('querystring');
 // https://github.com/mikeal/request  Request -- Simplified HTTP client
 // http://nodejs.cn/npm/request/
 var request = require("request");
-var util = require("util");
+var util = require('util');
+var path = require("path");
+var fs = require('fs');
+
 var config = require("../config")();
 var debug = require('debug')(config.appName);
 var exception = require("./exception");
@@ -143,8 +146,6 @@ var formPost = function(url, data, success, failed) {
         }
     });
 };
-var Encoder = require('qr').Encoder;
-var encoder = new Encoder;
 
 /**
  * QR code generator
@@ -154,20 +155,31 @@ var encoder = new Encoder;
  */
 
 function qrEncoder(value, filename, callback) {
-    var filePath = "/public/images/qr_imgs/%s.png";
+    var filePath = "public/images/qr_imgs/%s.png";
     filename = filename || Date.now();
     filePath = util.format(filePath, filename);
-    debug("qrEncoder file path: ", filePath);
-    encoder.on('end', function() {
+
+    // find absolute qr code path.
+    var absoluteFilePath = path.resolve(process.cwd(), filePath);
+
+    debug("qrEncoder file path: ", absoluteFilePath);
+
+    var qr = require('qr-image');
+    var code = qr.image('http://blog.nodejitsu.com', {
+        type: 'png' //png, svg, eps and pdf
+    });
+    var output = fs.createWriteStream(absoluteFilePath);
+    code.on('end', function(e) {
         callback(filePath);
     });
-    encoder.on('error', function(err) {
-        // err is an instance of Error
+    code.on("error", function(err) {
         callback(exception.getErrorModel(err));
     });
-    encoder.encode(value, filePath);
+    code.pipe(output, {
+        end: true
+    });
 }
-var util = {
+var utilities = {
     // return signatured request parameters string.
     signRequest: signRequest,
     // simulator http form post request.
@@ -181,4 +193,4 @@ var util = {
     },
     qrEncoder: qrEncoder
 };
-module.exports = util;
+module.exports = utilities;

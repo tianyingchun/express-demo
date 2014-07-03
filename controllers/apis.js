@@ -1,4 +1,5 @@
 var util = require("util");
+var path = require("path");
 var config = require("../config")();
 var base = require("./base");
 var express = require('express');
@@ -61,9 +62,9 @@ router.post("/order/create", function(req, res) {
 // place an 1qianbao order.
 router.post("/order/1qianbao/placeorder", function(req, res) {
     var remoteOrder = dataProvider.get("remote", "order");
-    var orderNo = Date.now();//req.body;
+    var orderNo = Date.now(); //req.body;
     var orderAmount = 10;
-    console.log("order No:", orderNo);
+    debug("order No:", orderNo);
     // remote place an order.
     remoteOrder.placeOrder(orderNo, orderAmount, function(result) {
         if (base.dbRequestSuccess(result)) {
@@ -72,6 +73,43 @@ router.post("/order/1qianbao/placeorder", function(req, res) {
             base.apiErrorOutput(res, result.error);
         }
     });
+});
+/**
+ * Generated new qr code image path
+ * @param  {object} req request
+ * @param  {object} res response
+ */
+router.get("/images/qrcode", function(req, res) {
+    // images qrcode service query string.
+    debug("query:", req.query);
+
+    var fileName = req.query.fileName;
+    var value = req.query.value;
+    var qrCode = require("../helpers/utils").qrEncoder;
+    qrCode(value, fileName, function(result) {
+        if (base.dbRequestSuccess(result)) {
+            var rootPath = [req.protocol, "://", req.host.toString()];
+            if (config.port) {
+                rootPath.push(":" + config.port);
+            }
+            rootPath.push("/");
+            var filePath = rootPath.join("") + result.replace("public", "static");
+
+            debug("qrCode Http url:", filePath);
+            base.apiOkOutput(res, filePath);
+        } else {
+            base.apiErrorOutput(res, result.error);
+        }
+    });
+});
+// for testing purpose,directly generate qrcode.
+router.get('/images/qrcode_directly', function(req, res) {
+    var qr = require('qr-image');
+    var code = qr.image("https://test2-www.1qianbao.com:7443/cashier/00030003201407030000000002157857", {
+        type: 'png'
+    });
+    res.type('png');
+    code.pipe(res);
 });
 
 // for testing purpose.

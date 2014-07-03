@@ -66,6 +66,8 @@
     </div>
     <input class="button place-order" id="placeanorder" type="submit" value="去下订单">
     <input class="button place-order" id="placeorder1qianbao" type="submit" value="1钱包下单">
+    <input class="button place-order" id="qrcode" type="submit" value="生成二维码">
+
 
 </div>
 {% endblock%} {% block scripts%}
@@ -161,7 +163,24 @@ $(function() {
             data: Date.now(),
             dataType: "json",
             contentType: 'application/json',
-            success: function(result) { 
+            success: function(result) {
+                console.log(result);
+            },
+            error: function(result) {
+                console.log(result);
+            }
+        });
+    });
+    $("#qrcode").on("click", function(e) {
+        $.ajax({
+            type: "GET",
+            url: "/api/images/qrcode",
+            data: {
+                fileName: "testqr",
+                value: "sdfsfs"
+            },
+            dataType: "json",
+            success: function(result) {
                 console.log(result);
             },
             error: function(result) {
