@@ -1,16 +1,30 @@
 var _ = require("underscore");
 // merchant configuration, Note: all parameters are case sensitive
+// 1qianbao remote api configuration.
+var qianbaoCfg = {
+    local: {
+        orderRemoteUri: "http://test2-www.1qianbao.com:4443/ffastpay",
+        merchantId: "900000000009",
+        merchantKey: "dc2eb86cfd1e4134bd2368bc28820adf",
+        cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}" // cacheier request.
+    },
+    production: {
+        orderRemoteUri: "https://mapi.1qianbao.com/ffastpay",
+        merchantId: "900000000256",
+        merchantKey: "a85f52756a13402191155ee8a7b3f309",
+        cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}" // cacheier request.
+    }
+};
+qianbaoCfg.staging = qianbaoCfg.local;
+
+
 var merchantCfg = {
-    orderRemoteUri:"https://mapi.1qianbao.com/ffastpay",//http://test2-www.1qianbao.com:4443/ffastpay", // 1qianbao place order request.
-    cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}", // cacheier request.
-    merchantId: "900000000256",//900000000009", //商户号
-    merchantKey: "a85f52756a13402191155ee8a7b3f309",//9286ed7a54e94c5e96820896d02c412d", //商户约定密钥
     charset: "UTF-8",
     version: "1.0.0", //消息版本号
     signMethod: "SHA-256",
     orderCurrency: "CNY", // 人民币
     transType: "001", //交易类型-001[消费]
-    transCode: "0001", //交易代码 0001[既时支付]
+    transCode: "0014",//0001", //交易代码 0001[既时支付],0014:[扫码付]
     backEndUrl: "", //后台通知URL
     frontEndUrl: "", //前台通知URL
     sameOrderFlag: "N" // 当前订单是否允许重复
@@ -49,7 +63,8 @@ var serverCfg = {
 };
 
 module.exports = function(mode) {
-    var use = serverCfg[mode || process.argv[2] || 'local'] || serverCfg['local'];
-    var use = _.extend(use, config, merchantCfg);
+    var env = 'local';
+    var use = serverCfg[mode || process.argv[2] || env] || serverCfg[env];
+    var use = _.extend(use, config, merchantCfg, qianbaoCfg[env]);
     return use;
 };
