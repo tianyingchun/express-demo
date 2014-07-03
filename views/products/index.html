@@ -182,6 +182,10 @@ $(function() {
             dataType: "json",
             success: function(result) {
                 console.log(result);
+                var qrUrl = result.info;
+                if (!$("body").find("img.qr").length) {
+                    $("body").append("<img src='" + qrUrl + "' class='qr' />");
+                }
             },
             error: function(result) {
                 console.log(result);
