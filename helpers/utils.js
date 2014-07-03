@@ -9,10 +9,10 @@ var querystring = require('querystring');
 // https://github.com/mikeal/request  Request -- Simplified HTTP client
 // http://nodejs.cn/npm/request/
 var request = require("request");
-
+var util = require("util");
 var config = require("../config")();
 var debug = require('debug')(config.appName);
-
+var exception = require("./exception");
 // signmethods mapping.
 var signMethodMapping = {
     "SHA-256": "sha256"
@@ -83,6 +83,12 @@ var filterNotRequiredSignatureParams = function(params) {
 
     return params;
 };
+
+/**
+ * Sign request for 1qianbao merchant api request
+ * @param  {object} requestParams the request object.
+ * @return {string}               the signatured string
+ */
 var signRequest = function(requestParams) {
     var merchantKey = config.merchantKey;
     // filter empty parameters.
@@ -114,7 +120,7 @@ var signRequest = function(requestParams) {
  * @param  {function} failed  the faield callback
  */
 var formPost = function(url, data, success, failed) {
-    console.log("form request data:", data);
+    debug("form request data:", data);
     var options = {
         url: url,
         method: "POST",
@@ -137,6 +143,30 @@ var formPost = function(url, data, success, failed) {
         }
     });
 };
+var Encoder = require('qr').Encoder;
+var encoder = new Encoder;
+
+/**
+ * QR code generator
+ * @param  {string}   value    the qr code value
+ * @param  {string}   filename the save picture url
+ * @param  {Function} callback the callback function
+ */
+
+function qrEncoder(value, filename, callback) {
+    var filePath = "/public/images/qr_imgs/%s.png";
+    filename = filename || Date.now();
+    filePath = util.format(filePath, filename);
+    debug("qrEncoder file path: ", filePath);
+    encoder.on('end', function() {
+        callback(filePath);
+    });
+    encoder.on('error', function(err) {
+        // err is an instance of Error
+        callback(exception.getErrorModel(err));
+    });
+    encoder.encode(value, filePath);
+}
 var util = {
     // return signatured request parameters string.
     signRequest: signRequest,
@@ -148,6 +178,7 @@ var util = {
         //Date.now();
         var newDate = new Date;
         return newDate.getTime();
-    }
+    },
+    qrEncoder: qrEncoder
 };
 module.exports = util;
