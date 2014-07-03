@@ -13,7 +13,13 @@ var remoteOrderService = dataProvider.get("remote", "order");
 
 /* GET home page. list all products */
 router.get('/', function(req, res) {
-	// list all products.
+
+    var OrderModel = require("../models/Order");
+    var _order = new OrderModel();
+
+    console.log(_order, typeof(_order.extend));
+
+    // list all products.
     productService.findAll(function(result) {
         if (base.dbRequestSuccess(result)) {
             res.render('products/index', {

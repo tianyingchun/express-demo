@@ -1,22 +1,4 @@
-function inherit(subclass, supperclass) {
-    var F = function() {};
-    F.prototype = supperclass.prototype;
-    subclass.prototype = new F();
-    subclass.prototype.supper = supperclass.prototype;
-    subclass.prototype.constructor = subclass;
-    if (supperclass.prototype.constructor == Object.prototype.constructor) {
-        supperclass.prototype.constructor = supperclass;
-    }
-    return subclass;
-
-}
-
-function setPrototype(ctor, properties) {
-    ctor.prototype = properties || {};
-    ctor.prototype.constructor = ctor;
-    return ctor;
-};
-
+var util = require("util");
 /**
  * Base model class.
  * @param {} db
@@ -24,17 +6,16 @@ function setPrototype(ctor, properties) {
 var Base = function(db) {
     this.db = db;
 };
+Base.extend = function(subCtor) {
+    util.inherits(subCtor, Base);
+    return subCtor;
+};
 
 Base.prototype = {
     constructor: Base,
-    extend: function(properties) {
-        var child = inherit(function child() {}, this.constructor);
-        for (var p in properties) {
-            if (properties.hasOwnProperty(p)) {
-                child.prototype[p] = properties[p];
-            }
-        }
-        return child;
+    extend: function(subCtor) {
+        util.inherits(subCtor, this.constructor);
+        return subCtor;
     },
     setDB: function(db) {
         this.db = db;
@@ -43,6 +24,6 @@ Base.prototype = {
         if (this._collection) return this._collection;
         return this._collection = this.db.collection('');
     }
-}
+};
 
 module.exports = Base;

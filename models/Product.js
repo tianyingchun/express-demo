@@ -1,10 +1,9 @@
 var Base = require("./Base");
-module.exports = new Base().extend({
-	_id: null,
-    name: null,
-    pictureUrl: null,
-    description: null,
-    unitPrice: 0,
-    status: 1,
-    date: Date.now()
+module.exports = new Base().extend(function Product() {
+    this.name = null;
+    this.pictureUrl = null;
+    this.description = null;
+    this.unitPrice = 0;
+    this.status = 1;
+    this.date = Date.now();
 });
