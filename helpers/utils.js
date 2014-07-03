@@ -165,7 +165,7 @@ function qrEncoder(value, filename, callback) {
     debug("qrEncoder file path: ", absoluteFilePath);
 
     var qr = require('qr-image');
-    var code = qr.image('http://blog.nodejitsu.com', {
+    var code = qr.image(value, {
         type: 'png' //png, svg, eps and pdf
     });
     var output = fs.createWriteStream(absoluteFilePath);

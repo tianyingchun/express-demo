@@ -1,6 +1,7 @@
 var _ = require("underscore");
 // merchant configuration, Note: all parameters are case sensitive
 // 1qianbao remote api configuration.
+// user:13901734000  pwd:1qaz2wsx   pay pwd:3edc4rfv
 var qianbaoCfg = {
     local: {
         orderRemoteUri: "http://test2-www.1qianbao.com:4443/ffastpay",
