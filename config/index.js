@@ -2,9 +2,11 @@ var _ = require("underscore");
 // merchant configuration, Note: all parameters are case sensitive
 // 1qianbao remote api configuration.
 // user:13901734000  pwd:1qaz2wsx   pay pwd:3edc4rfv
+// 18221851560   1qaz2wsx   支付密码：3edc4rfv
+// 18000000005  1qaz2wsx     3edc4rfv
 var qianbaoCfg = {
     local: {
-        orderRemoteUri: "http://test2-www.1qianbao.com:4443/ffastpay",
+        orderRemoteUri: "https://test2-www.1qianbao.com:4443/ffastpay",
         merchantId: "900000000009",
         merchantKey: "dc2eb86cfd1e4134bd2368bc28820adf",
         cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}" // cacheier request.

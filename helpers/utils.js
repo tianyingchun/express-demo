@@ -128,6 +128,7 @@ var formPost = function(url, data, success, failed) {
         url: url,
         method: "POST",
         form: data,
+        strictSSL:false,
         headers: {
             "charset": "utf-8"
         },

@@ -63,10 +63,13 @@
     </div>
     <div class="order_id">
         <input type="hidden" id="order-id" value="">
+        <input type="hidden" id="tranid" value="">
+
     </div>
-    <input class="button place-order" id="placeanorder" type="submit" value="去下订单">
+    <input class="button place-order" id="processall" type="submit" value="一键执行">
+    <!-- <input class="button place-order" id="placeanorder" type="submit" value="去下订单">
     <input class="button place-order" id="placeorder1qianbao" type="submit" value="1钱包下单">
-    <input class="button place-order" id="qrcode" type="submit" value="生成二维码">
+    <input class="button place-order" id="qrcode" type="submit" value="生成二维码"> -->
 
 
 </div>
@@ -89,17 +92,17 @@ $(function() {
     // calculate cart subtotal.
 
     function calSubtotal() {
-        var $items = $orderproducts.find("tr[data-id]");
-        var sum = 0;
-        $items.each(function(index, item) {
-            var $item = $(item);
-            var qty = parseInt($item.find(".qty").text());
-            var unitPrice = parseFloat($item.find(".unit-price").text());
-            sum += qty * unitPrice;
-        });
-        $subtotal.find(".subtotal-value").text(sum.toFixed(2));
-    }
-    // remove product item from shopping cart.
+            var $items = $orderproducts.find("tr[data-id]");
+            var sum = 0;
+            $items.each(function(index, item) {
+                var $item = $(item);
+                var qty = parseInt($item.find(".qty").text());
+                var unitPrice = parseFloat($item.find(".unit-price").text());
+                sum += qty * unitPrice;
+            });
+            $subtotal.find(".subtotal-value").text(sum.toFixed(2));
+        }
+        // remove product item from shopping cart.
     $orderproducts.on("click", "button.button", function(e) {
         var pId = $(this).data("id");
         $orderproducts.find("tr[data-id='" + pId + "']").remove();
@@ -120,64 +123,76 @@ $(function() {
         showMessage();
         calSubtotal();
     });
-    $("#placeanorder").on("click", function(e) {
-        var $cartList = $orderproducts.find("tr");
-        var orderCfg = [];
-        $cartList.each(function(index, item) {
-            var $item = $(item);
-            var purchaseItem = {
-                pId: $item.data("id"),
-                qty: parseInt($item.find(".qty").text())
-            };
-            if (purchaseItem.pId) {
-                orderCfg.push(purchaseItem);
+    // place order in local database.
+    function placeLocalOrder(callback) {
+            var $cartList = $orderproducts.find("tr");
+            var orderCfg = [];
+            $cartList.each(function(index, item) {
+                var $item = $(item);
+                var purchaseItem = {
+                    pId: $item.data("id"),
+                    qty: parseInt($item.find(".qty").text())
+                };
+                if (purchaseItem.pId) {
+                    orderCfg.push(purchaseItem);
+                }
+            });
+            if (orderCfg.length) {
+                $.ajax({
+                    type: "POST",
+                    url: "/api/order/create",
+                    data: JSON.stringify(orderCfg),
+                    dataType: "json",
+                    contentType: 'application/json',
+                    success: function(result) {
+                        if (result.retCode == 1) {
+                            var orderId = result.info && result.info.orderId || 0;
+                            var totalAmount = result.info && result.info.totalAmount || 0;
+                            $("#order-id").val(orderId);
+                            $("#placeorder1qianbao").show();
+                            callback && callback(orderId, totalAmount);
+                        }
+                        console.log(result);
+                    },
+                    error: function(result) {
+                        console.log(result);
+                    }
+                });
+            } else {
+                alert("当前，购物车没有产品！")
             }
-        });
-        if (orderCfg.length) {
+        }
+        // place order from 1 qianbao.
+
+    function placeOrderfrom1qianbao(orderId, totalAmount, callback) {
             $.ajax({
                 type: "POST",
-                url: "/api/order/create",
-                data: JSON.stringify(orderCfg),
+                url: "/api/order/1qianbao/placeorder",
+                data: JSON.stringify({
+                    orderId: orderId,
+                    totalAmount: totalAmount
+                }),
                 dataType: "json",
                 contentType: 'application/json',
                 success: function(result) {
-                    if (result.retCode == 1) {
-                        var orderId = result.info && result.info.orderId || 0;
-                        $("#order-id").val(orderId);
-                        $("#placeorder1qianbao").show();
-                    }
-                    console.log(result);
+                    console.log("placeOrderfrom1qianbao: ", result);
+                    $("#tranid").val();
+                    callback && callback(result);
                 },
                 error: function(result) {
                     console.log(result);
                 }
             });
-        } else {
-            alert("当前，购物车没有产品！")
         }
-    });
-    $("#placeorder1qianbao").on("click", function(e) {
-        $.ajax({
-            type: "POST",
-            url: "/api/order/1qianbao/placeorder",
-            data: Date.now(),
-            dataType: "json",
-            contentType: 'application/json',
-            success: function(result) {
-                console.log(result);
-            },
-            error: function(result) {
-                console.log(result);
-            }
-        });
-    });
-    $("#qrcode").on("click", function(e) {
+        // generate qr code.
+
+    function qrCode(transId) {
         $.ajax({
             type: "GET",
             url: "/api/images/qrcode",
             data: {
                 fileName: "testqr",
-                value: "https://test2-www.1qianbao.com:7443/cashier/00030003201407030000000002157931"
+                value: "https://test2-www.1qianbao.com:7443/cashier/" + transId
             },
             dataType: "json",
             success: function(result) {
@@ -185,12 +200,33 @@ $(function() {
                 var qrUrl = result.info;
                 if (!$("body").find("img.qr").length) {
                     $("body").append("<img src='" + qrUrl + "' class='qr' />");
+                } else {
+                    $(".qr").attr("img", qrUrl);
                 }
             },
             error: function(result) {
                 console.log(result);
             }
         });
+    }
+    $("#placeanorder").on("click", function(e) {
+        placeLocalOrder();
+    });
+    $("#placeorder1qianbao").on("click", function(e) {
+        placeOrderfrom1qianbao($("#order-id").val());
+    });
+
+    $("#qrcode").on("click", function(e) {
+        qrCode();
+    });
+    $("#processall").on("click", function(e) {
+        placeLocalOrder(function(orderId, totalAmount) {
+            placeOrderfrom1qianbao(orderId, totalAmount, function(result) {
+                console.log("1qianbao:", result);
+                var transId = result.info && result.info.transId;
+                qrCode(transId);
+            });
+        })
     });
 });
 </script>

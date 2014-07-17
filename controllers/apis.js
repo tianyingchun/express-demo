@@ -62,9 +62,12 @@ router.post("/order/create", function(req, res) {
 // place an 1qianbao order.
 router.post("/order/1qianbao/placeorder", function(req, res) {
     var remoteOrder = dataProvider.get("remote", "order");
-    var orderNo = Date.now(); //req.body;
-    var orderAmount = 10;
-    debug("order No:", orderNo);
+    var orderNo = req.body.orderId;
+    var orderAmount = req.body.totalAmount;
+    debug("1qianbao order params:", {
+        orderNo: orderNo,
+        orderAmount: orderAmount
+    });
     // remote place an order.
     remoteOrder.placeOrder(orderNo, orderAmount, function(result) {
         if (base.dbRequestSuccess(result)) {

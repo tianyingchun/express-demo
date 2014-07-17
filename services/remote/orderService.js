@@ -1,12 +1,18 @@
 var util = require("../../helpers/utils");
 var config = require("../../config/index")();
 var exception = require('../../helpers/exception');
+// formatter.
+var format = require('atma-formatter');
 var querystring = require('querystring');
 var _ = require("underscore");
 var debug = require('debug')(config.appName);
 
 var placeOrder = function(mercOrderNo, orderAmount, callback) {
-
+    //yyyyMMddHHmmss
+    var orderTime = format("{date:yyyyMMddHHmmss}", {
+        date: new Date()
+    });
+    debug("date:", orderTime); //20140717141815
     // prepare request parameters.
     var params = {
         version: config.version,
@@ -16,10 +22,10 @@ var placeOrder = function(mercOrderNo, orderAmount, callback) {
         transCode: config.transCode,
         merchantId: config.merchantId,
         mercOrderNo: mercOrderNo, //"123456789",
-        orderAmount: orderAmount, //"0.01",
+        orderAmount: orderAmount * 100, //"0.01", 单位是分
         orderCurrency: config.orderCurrency,
         sameOrderFlag: config.sameOrderFlag,
-        orderTime: "20140701180308", //yyyyMMddHHmmss Date.now(),
+        orderTime: orderTime, //"20140701180308", //yyyyMMddHHmmss Date.now(),
         backEndUrl: config.backEndUrl,
         frontEndUrl: config.frontEndUrl
     };
