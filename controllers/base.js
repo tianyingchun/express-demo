@@ -20,13 +20,17 @@ module.exports = {
      * @param  {object} the Error instance.
      */
     apiErrorOutput: function(res, error) {
+        if (error && error.error) {
+            error = error.error;
+        }
         exception.writeJSONError(res, error);
     },
     apiOkOutput: function(res, info) {
         if (this.dbRequestSuccess(info)) {
             res.json({
                 retCode: 1,
-                info: info
+                info: info,
+                message: ''
             });
         } else {
             this.apiErrorOutput(res, info.error);
@@ -57,6 +61,9 @@ module.exports = {
         };
     },
     dbRequestSuccess: function(result) {
-        return result.failed || true;
+        if (result.failed === true) {
+            return false;
+        }
+        return true;
     }
 }

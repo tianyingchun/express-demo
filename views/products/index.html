@@ -64,9 +64,10 @@
     <div class="order_id">
         <input type="hidden" id="order-id" value="">
         <input type="hidden" id="tranid" value="">
-
     </div>
     <input class="button place-order" id="processall" type="submit" value="一键执行">
+    <div id="loading">正在处理中...</div>
+    <div id="qrcode"></div>
     <!-- <input class="button place-order" id="placeanorder" type="submit" value="去下订单">
     <input class="button place-order" id="placeorder1qianbao" type="submit" value="1钱包下单">
     <input class="button place-order" id="qrcode" type="submit" value="生成二维码"> -->
@@ -198,8 +199,8 @@ $(function() {
             success: function(result) {
                 console.log(result);
                 var qrUrl = result.info;
-                if (!$("body").find("img.qr").length) {
-                    $("body").append("<img src='" + qrUrl + "' class='qr' />");
+                if (!$("#qrcode").find("img.qr").length) {
+                    $("#qrcode").append("<img src='" + qrUrl + "' class='qr' />");
                 } else {
                     $(".qr").attr("img", qrUrl);
                 }
@@ -220,11 +221,13 @@ $(function() {
         qrCode();
     });
     $("#processall").on("click", function(e) {
+        $("#loading").show();
         placeLocalOrder(function(orderId, totalAmount) {
             placeOrderfrom1qianbao(orderId, totalAmount, function(result) {
                 console.log("1qianbao:", result);
                 var transId = result.info && result.info.transId;
                 qrCode(transId);
+                $("#loading").hide();
             });
         })
     });

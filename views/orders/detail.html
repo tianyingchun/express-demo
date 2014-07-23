@@ -1,0 +1,50 @@
+{% extends "../layouts/master.html" %} {% block body %}
+
+<h1 class="header">
+    <span class="title">订单详情</span>
+
+</h1>
+<div class="order-detail">
+    <div class="paid-success">
+        {%if order.status =="paid" %} 支付成功 {%endif%}
+    </div>
+    <div class="item">
+        <div class="label">订单ID</div>
+        <div class="content">{{order.orderId}}</div>
+    </div>
+
+    <div class="item">
+        <div class="label">订单总额</div>
+        <div class="content">{{order.totalAmount}}</div>
+    </div>
+
+    <div class="item">
+        <div class="label">状态</div>
+        <div class="content">
+               {%if order.status =="initialize" %} 初始化 {% else %} {%if order.status =="paid" %} 已付款 {%else%} {%if order.status =="unpaid" %} 未支付 {%else%} {%if order.status =="failed" %} 下单失败 {%else%} 未知 {%endif%} {%endif%} {%endif%} {%endif%}
+        </div>
+    </div>
+    <div class="item product">
+        <table id="product-list">
+            <tr>
+                <th>产品名称</th>
+                <th>产品图片</th>
+                <th>产品描述</th>
+                <th>产品单价</th>
+                <th>数量</th>
+            </tr>
+            {% for product in order.products %}
+            <tr>
+                <td class="name">{{product.name}}</td>
+                <td class="picture">
+                    <img width="60" src="{{product.pictureUrl}}" />
+                </td>
+                <td class="description">{{product.description}}</td>
+                <td class="unit-price">{{product.unitPrice}}</td>
+                <td class="qty">{{product.purchaseQty}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock%} {% block scripts%} {% endblock%}

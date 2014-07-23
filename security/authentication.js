@@ -18,7 +18,7 @@ var authentication = {
             next();
         } else {
             var err = new Error('The api is unauthorized!');
-            err.status = 404;
+            err.status = 401;
             exception.writeJSONError(res, err);
         }
     }

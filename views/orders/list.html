@@ -15,15 +15,19 @@
             <th>订单总额</th>
             <th>订单状态</th>
             <th>订单时间</th>
+            <th>订单详情</th>
         </tr>
         {% for order in orders %}
         <tr data-id="{{order.orderId}}">
             <td class="order-id">{{order.orderId}}</td>
             <td class="total-amount">{{order.totalAmount}}</td>
             <td class="order-status">
-                {%if order.status =="initialize" %} 初始化 {% else %} {%if order.status =="paid" %} 已付款 {%else%} {%if order.status =="completed" %} 已经完成 {%else%} 未知 {%endif%} {%endif%} {%endif%}
+                {%if order.status =="initialize" %} 初始化 {% else %} {%if order.status =="paid" %} 已付款 {%else%} {%if order.status =="unpaid" %} 未支付 {%else%} {%if order.status =="failed" %} 下单失败 {%else%} 未知 {%endif%} {%endif%} {%endif%} {%endif%}
             </td>
             <td class="order-date">{{order.createDate}}</td>
+            <td class="order-detail"><a href="/order/detail/{{order.orderId}}">查看详情</a>
+            </td>
+
         </tr>
         {% endfor %}
     </table>

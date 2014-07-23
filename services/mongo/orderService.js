@@ -1,9 +1,12 @@
 var util = require('util');
+var config = require("../../config")();
+var debug = require('debug')(config.appName);
 var mongoose = require('mongoose');
 var exception = require('../../helpers/exception');
 var _ = require('underscore');
 var OrderModel = require("../../models/Order");
 var productService = require("./productService")();
+
 var Schema = mongoose.Schema;
 // define product schema.
 var orderSchema = new Schema({
@@ -11,6 +14,7 @@ var orderSchema = new Schema({
         type: String,
         required: true
     },
+    orderTraceNo: String, // save 1qianbao tranNo.
     status: String,
     totalAmount: String,
     createDate: {
@@ -48,7 +52,7 @@ function OrderProvider() {
             }
         };
         return qty;
-    }
+    };
     // get order detail information. include product detail, subtotal
     // {subtotal:10, products:[]}
     var calOrderProductItem = function(orderCfg, callback) {
@@ -75,6 +79,7 @@ function OrderProvider() {
                         products.push({
                             productId: item._id.toString(), //convert objectId to id string.
                             name: item.name,
+                            pictureUrl: item.pictureUrl,
                             description: item.description,
                             unitPrice: item.unitPrice,
                             purchaseQty: qty
@@ -91,7 +96,7 @@ function OrderProvider() {
         } else {
             callback(exception.getErrorModel(new Error("the orderCfg data exception!")));
         }
-    }
+    };
     /**
      * place an order
      * @param  {array} orderData [{pId:"", qty:''}]
@@ -116,7 +121,7 @@ function OrderProvider() {
                     order.totalAmount = totalAmount.toFixed(2);
                     order.products = products;
                     console.log("order:", JSON.stringify(order))
-                    // save order detail information.
+                        // save order detail information.
                     _self.save(order, callback);
                 }
             });
@@ -135,8 +140,31 @@ function OrderProvider() {
             }
         });
     };
-    this.findOrderById = function(orderId) {
-        // body...
+    // note: order.orderId is required.
+    this.update = function(order, callback) {
+        debug("update param data: ", order);
+        var _self = this;
+        MogoOrder.findOneAndUpdate({
+            orderId: order.orderId
+        }, order, function(err, order) {
+            if (err) {
+                callback(exception.getErrorModel(err));
+            } else {
+                callback(order);
+            }
+        });
+    };
+    this.findOrderById = function(orderId, callback) {
+        MogoOrder.findOne({
+            orderId: orderId
+        }, function(err, detail) {
+            if (err) {
+                callback(exception.getErrorModel(err));
+            } else {
+                var order = modelConverter(detail);
+                callback(order);
+            }
+        });
     };
     this.findAll = function(callback) {
         MogoOrder.find(function(err, orders) {
@@ -148,7 +176,6 @@ function OrderProvider() {
         });
     };
 };
-
 module.exports = function() {
     return new OrderProvider();
 };

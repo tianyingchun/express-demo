@@ -106,7 +106,7 @@ p:extend(a) {
         float: right;
         width: 140px;
         margin-right: 4px;
-        margin-top:10px;
+        margin-top: 30px;
     }
     img {
         width: 60px;
@@ -223,4 +223,41 @@ table {
     line-height: 30px;
     font-size: 14px;
     display:none;
+}
+
+/* order detail page*/
+.order-detail{
+    position:relative;
+    .paid-success{
+        position: absolute;
+        right: 12px;
+        font-size: 40px;
+        top: 0;
+        color: rgb(255, 143, 0);
+    }
+    .item{
+        clear:both;
+        padding: 5px 0;
+    }
+    .label{
+        float:left;
+        width:100px;
+    }
+    .content{
+        float:left;
+    }
+}
+#loading{
+    display:none;
+    float:right;
+    margin:20px;
+    margin-right: 120px;
+}
+#qrcode{
+    float: right;
+    margin-right: 30px;
+    .qr{
+        width: 100px;
+        height: 100px;
+    }
 }

@@ -24,10 +24,10 @@ var merchantCfg = {
     version: "1.0.0", //消息版本号
     signMethod: "SHA-256",
     orderCurrency: "CNY", // 人民币
-    transType: "001", //交易类型-001[消费]
+    transType: "001", //交易类型-001[消费]  005: 查询
     transCode: "0014",//0001", //交易代码 0001[既时支付],0014:[扫码付]
     backEndUrl: "", //后台通知URL
-    frontEndUrl: "", //前台通知URL
+    frontEndUrl: "http://localhost:3000/order/detail/{0}", //前台通知URL
     sameOrderFlag: "N" // 当前订单是否允许重复
 };
 // site configuration.
