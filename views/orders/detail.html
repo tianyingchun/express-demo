@@ -27,10 +27,10 @@
     <div class="item product">
         <table id="product-list">
             <tr>
-                <th>产品名称</th>
-                <th>产品图片</th>
-                <th>产品描述</th>
-                <th>产品单价</th>
+                <th>名称</th>
+                <th>图片</th>
+                <th>描述</th>
+                <th>单价</th>
                 <th>数量</th>
             </tr>
             {% for product in order.products %}
@@ -45,6 +45,9 @@
             </tr>
             {% endfor %}
         </table>
+    </div>
+    <div class="backtohome">
+        <a class="back-to-home" href="/product/list">返回首页</a>
     </div>
 </div>
 {% endblock%} {% block scripts%} {% endblock%}

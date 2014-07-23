@@ -12,6 +12,18 @@ body {
         top: -55px !important;
         font-size: 30px !important;
     }
+    table td.name{
+        width: auto !important;
+    }
+    .header .button-list{
+        padding-top: 5px;
+        position: static !important;
+        .button{
+            float:left;
+            margin-right: 10px;
+            position: static !important;
+        }
+    }
 }
 
 /* For tablet */ 
@@ -90,7 +102,8 @@ p:extend(a) {
         position: absolute;
         right: 0;
         top: 0;
-        width: 200px;
+        height: 40px;
+        width: 260px;
         .add-new-product {
             position: absolute;
             right: 7px;
@@ -267,6 +280,16 @@ table {
     }
     .content{
         float:left;
+    }
+    .back-to-home{
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        color: #fff;
+        font-size: 1.2em;
+        text-decoration: none;
+        text-align: center;
+        background-color: #ff8f00;
     }
 }
 #loading{
