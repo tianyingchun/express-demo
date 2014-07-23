@@ -1,7 +1,7 @@
 var _ = require("underscore");
 // merchant configuration, Note: all parameters are case sensitive
 // 1qianbao remote api configuration. 
-// 中实名：18512340005 邬凝安 430181197303161748 光大贷记：3568370012340001  pay pwd: zxcv1234    -----new account for test2
+// 中实名：18512340005 邬凝安 430181197303161748 pwd:asdf1234 光大贷记：3568370012340001  pay pwd: zxcv1234    -----new account for test2
 var qianbaoCfg = {
     local: {
         orderRemoteUri: "https://test2-www.1qianbao.com:4443/ffastpay",
@@ -27,7 +27,7 @@ var merchantCfg = {
     transType: "001", //交易类型-001[消费]  005: 查询
     transCode: "0014",//0001", //交易代码 0001[既时支付],0014:[扫码付]
     backEndUrl: "", //后台通知URL
-    frontEndUrl: "http://localhost:3000/order/detail/{0}", //前台通知URL
+    frontEndUrl: "http://192.168.14.145:3000/order/detail/{0}", //前台通知URL
     sameOrderFlag: "N" // 当前订单是否允许重复
 };
 // site configuration.

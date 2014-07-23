@@ -27,11 +27,14 @@ var placeOrder = function(mercOrderNo, orderAmount, callback) {
         sameOrderFlag: config.sameOrderFlag,
         orderTime: orderTime, //"20140701180308", //yyyyMMddHHmmss Date.now(),
         backEndUrl: config.backEndUrl,
-        frontEndUrl: config.frontEndUrl.replace("{0}",mercOrderNo)
+        frontEndUrl: config.frontEndUrl.replace("{0}", mercOrderNo) // will automatically encode in utill.signRequest
     };
     // new params to remote server.
     var params_New = _.clone(params);
-
+    // make sure that the url has been encoded as parameters.
+    params_New.frontEndUrl = encodeURIComponent(params_New.frontEndUrl);
+    params_New.backEndUrl = encodeURIComponent(params_New.backEndUrl);
+    
     var signatured = util.signRequest(params);
 
     debug("signatured string %s", signatured);
@@ -42,13 +45,13 @@ var placeOrder = function(mercOrderNo, orderAmount, callback) {
 
     callback = callback || function noop() {};
 
-    var localOrderService =  require("../mongo/orderService")();
+    var localOrderService = require("../mongo/orderService")();
     util.formPost(config.orderRemoteUri, params_New, function success(data) {
         debug("place order form post: ", JSON.stringify(data));
         var mercOrderNo = data.mercOrderNo;
         var orderTraceNo = data.orderTraceNo;
         // try update local order details.
-       localOrderService.update({
+        localOrderService.update({
             orderId: mercOrderNo,
             orderTraceNo: orderTraceNo
         }, function() {
