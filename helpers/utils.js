@@ -128,7 +128,7 @@ var formPost = function(url, data, success, failed) {
         url: url,
         method: "POST",
         form: data,
-        strictSSL:false,
+        strictSSL: false,
         headers: {
             "charset": "utf-8"
         },
@@ -157,6 +157,9 @@ var formPost = function(url, data, success, failed) {
 
 function qrEncoder(value, filename, callback) {
     var filePath = "public/images/qr_imgs/%s.png";
+    if (config.virtualDir) {
+        filePath = config.virtualDir + filePath;
+    }
     filename = filename || Date.now();
     filePath = util.format(filePath, filename);
 

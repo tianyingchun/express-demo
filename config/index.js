@@ -10,10 +10,10 @@ var qianbaoCfg = {
         cachier: "https://test2-www.1qianbao.com:7443/cashier/{transId}" // cacheier request.
     },
     production: {
-        orderRemoteUri: "https://mapi.1qianbao.com/ffastpay",
+        orderRemoteUri: "https://180.168.41.175/ffastpay", //https://mapi.1qianbao.com/ffastpay",
         merchantId: "900000000256",
         merchantKey: "a85f52756a13402191155ee8a7b3f309",
-        cachier: "https://www.1qianbao.com/cashier/{transId}" // cacheier request.
+        cachier: "https://www.1qianbao.com/cashier/{transId}" // cachier request.
     }
 };
 qianbaoCfg.staging = qianbaoCfg.local;

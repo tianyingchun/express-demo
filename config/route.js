@@ -31,7 +31,6 @@ var errorHandler500 = function(err, req, res, next) {
 
 module.exports = {
     init: function(app) {
-        _app = app;
 
         // route request for all /product/* into our productController.
         app.use('/product', products);
