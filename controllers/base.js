@@ -17,7 +17,7 @@ var debug = require('debug')(config.appName);
 var getBaseUrl = function(req, queryPath) {
     var rootPath = [req.host.toString()];
     // for production remove port number cause of ngix server.
-    if (config.mode == "production" && config.port) {
+    if (config.mode != "production" && config.port) {
         rootPath.push(":" + config.port);
     }
     if (config.virtualDir) {
