@@ -84,7 +84,7 @@ function showOrderDetail(req, res, next) {
                 });
             } else {
                 base.renderPageModel(req, res, 'orders/detail', {
-                    order: orderDetail
+                    order: result
                 });
             }
         }

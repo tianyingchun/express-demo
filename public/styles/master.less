@@ -3,7 +3,7 @@ body {
     font: 14px"Lucida Grande", Helvetica, Arial, sans-serif;
 }
 /* For mobile and smartphones */ 
-@media only screen and (min-width : 320px) and (max-width : 480px) {
+@media all and (min-width : 320px) and (max-width : 480px) {
 /*style*/
     body{
         padding:0;
@@ -24,15 +24,20 @@ body {
             position: static !important;
         }
     }
+    
 }
-
+@media all and (max-width: 1000px) {
+    .create-product{
+        margin-left:0 !important;
+    }
+}
 /* For tablet */ 
-@media only screen and (min-width : 768px) {
+@media all and (min-width : 768px) {
 /*style*/ 
 }
 
 /* For iPhones */ 
-@media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and
+@media all and (-webkit-min-device-pixel-ratio : 1.5), only screen and
  (min-device-pixel-ratio : 1.5) { 
 /*style*/ 
 }
