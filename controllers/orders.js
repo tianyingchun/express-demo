@@ -14,11 +14,11 @@ router.get('/detail/:orderId', showOrderDetail);
 function listAllOrders(req, res, next) {
     orderService.findAll(function(orders) {
         if (base.dbRequestSuccess(orders)) {
-            res.render('orders/list', {
+            base.renderPageModel(req, res, 'orders/list', {
                 orders: orders
             });
         } else {
-            res.render('error', base.errorPageModel("find all orders exception!", orders.error));
+            base.renderPageModel(req, res, 'error', base.errorPageModel("find all orders exception!", orders.error));
         }
     });
 }
@@ -27,7 +27,7 @@ function showOrderDetail(req, res, next) {
     var orderId = req.params.orderId;
     orderService.findOrderById(orderId, function(result) {
         if (!base.dbRequestSuccess(result)) {
-            res.render('error', base.errorPageModel("find order detail exception!", result.error));
+            base.renderPageModel(req, res, 'error', base.errorPageModel("find order detail exception!", result.error));
         } else {
             // remote query order status to check if order has been placed or paid.
             var orderId = result.orderId;
@@ -39,7 +39,7 @@ function showOrderDetail(req, res, next) {
                     orderTraceNo: orderTraceNo
                 }, function(result) {
                     if (!base.dbRequestSuccess(result)) {
-                        res.render('error', base.errorPageModel("query order detail remotely exception!", result.error));
+                        base.renderPageModel(req, res, 'error', base.errorPageModel("query order detail remotely exception!", result.error));
                     } else {
                         // qeury succcess.
                         if (result.respCode == "0000") {
@@ -49,7 +49,7 @@ function showOrderDetail(req, res, next) {
                                         "orderId": orderId,
                                         "status": "paid"
                                     }, function(orderDetail) {
-                                        res.render('orders/detail', {
+                                        base.renderPageModel(req, res, 'orders/detail', {
                                             order: orderDetail
                                         });
                                     });
@@ -61,8 +61,7 @@ function showOrderDetail(req, res, next) {
                                     }, function(orderDetail) {
                                         debug("order status: ", orderDetail);
                                         // generate qr code.
-                                        
-                                        res.render('orders/detail', {
+                                        base.renderPageModel(req, res, 'orders/detail', {
                                             order: orderDetail
                                         });
                                     });
@@ -72,20 +71,20 @@ function showOrderDetail(req, res, next) {
                                         "orderId": orderId,
                                         "status": "failed"
                                     }, function(orderDetail) {
-                                        res.render('orders/detail', {
+                                        base.renderPageModel(req, res, 'orders/detail', {
                                             order: orderDetail
                                         });
                                     });
                                     break;
                             }
                         } else {
-                            res.render('error', base.errorPageModel("query failed!", result.error));
+                            base.renderPageModel(req, res, 'error', base.errorPageModel("query failed!", result.error));
                         }
                     }
                 });
             } else {
-                res.render('orders/detail', {
-                    order: result
+                base.renderPageModel(req, res, 'orders/detail', {
+                    order: orderDetail
                 });
             }
         }

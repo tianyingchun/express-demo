@@ -66,7 +66,7 @@ module.exports = {
      * @param {object} response
      * @param {object} model
      */
-    getPageModel: function(req, res, tmpUrl, model) {
+    renderPageModel: function(req, res, tmpUrl, model) {
         var rootPath = [req.protocol, "://", req.host.toString()];
         if (config.port) {
             rootPath.push(":" + config.port);

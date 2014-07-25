@@ -23,11 +23,11 @@ router.get('/', listAllProducts);
 function listAllProducts(req, res) {
     productService.findAll(function(result) {
         if (base.dbRequestSuccess(result)) {
-            res.render('products/index', {
+            base.renderPageModel(req, res, 'products/index', {
                 products: result
             });
         } else {
-            res.render('error', base.errorPageModel("find all product exception!", result.error));
+            base.renderPageModel(req, res, 'error', base.errorPageModel("find all product exception!", result.error));
         }
     });
 }
@@ -37,7 +37,7 @@ function listAllProducts(req, res) {
  */
 
 function createProductUI(req, res) {
-    res.render("products/create", {});
+    base.renderPageModel(req, res, 'products/create', {});
 };
 /**
  * Create new products.
@@ -66,12 +66,12 @@ function createProduct(req, res) {
     // save product infomation to database.
     productService.addProduct(_product, function(result) {
         if (base.dbRequestSuccess(result)) {
-            res.render("products/create", {
+            base.renderPageModel(req, res, 'products/create', {
                 success: "ok",
                 data: result
             });
         } else {
-            res.render('error', base.errorPageModel("save new product to db failed!", result.error));
+            base.renderPageModel(req, res, 'error', base.errorPageModel("save new product to db failed!", result.error));
         }
     });
 

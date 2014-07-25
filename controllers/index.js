@@ -18,11 +18,11 @@ router.get('/', function(req, res) {
     productService.findAll(function(result) {
         if (base.dbRequestSuccess(result)) {
             // render data to page.
-            base.getPageModel(req, res, 'products/index', {
+            base.renderPageModel(req, res, 'products/index', {
                 products: result
             });
         } else {
-            res.render('error', base.errorPageModel("find all products exception!", result.error));
+            base.renderPageModel(req, res, 'error', base.errorPageModel("find all products exception!", result.error));
         }
     });
 });
