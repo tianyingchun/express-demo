@@ -2,7 +2,7 @@ var products = require('../controllers/products');
 var routes = require('../controllers/index');
 var users = require('../controllers/users');
 var apis = require('../controllers/apis');
-var orders =require("../controllers/orders");
+var orders = require("../controllers/orders");
 var exception = require("../helpers/exception");
 
 var _app = null;
@@ -31,25 +31,26 @@ var errorHandler500 = function(err, req, res, next) {
 
 module.exports = {
     init: function(app) {
+        _app = app;
 
         // route request for all /product/* into our productController.
-        app.use('/product', products);
+        _app.use('/product', products);
 
         // route request for all /order/* into our ordercontroller.
-        app.use('/order', orders);
+        _app.use('/order', orders);
 
         // for all restfull /api/* router, first validate apis security.
-        app.use('/api', apis);
+        _app.use('/api', apis);
 
         // only requests to /users/* will be sent to our "router"
-        app.use('/users', users);
+        _app.use('/users', users);
 
-        app.use('/', routes);
+        _app.use('/', routes);
 
         /// catch 404 and forward to error handler
-        app.use(errorHandler404);
+        _app.use(errorHandler404);
 
         // catch 500 and other error and stop app exec.
-        app.use(errorHandler500);
+        _app.use(errorHandler500);
     }
 }
