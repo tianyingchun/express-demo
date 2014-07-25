@@ -5,7 +5,33 @@
 var security = require("../security/authentication");
 var exception = require("../helpers/exception");
 var _ = require("underscore");
+var path = require('path');
 var config = require("../config")();
+var debug = require('debug')(config.appName);
+
+/**
+ * Get application base url
+ * @param  {request} req       http request
+ * @param  {quer} queryPath query path  'order/list' -->http://baidu.com:10/virtual/order/list
+ */
+var getBaseUrl = function(req, queryPath) {
+    var rootPath = [req.host.toString()];
+    // for production remove port number cause of ngix server.
+    if (config.mode != "production" && config.port) {
+        rootPath.push(":" + config.port);
+    }
+    if (config.virtualDir) {
+        rootPath.push("/" + config.virtualDir);
+    }
+    if (queryPath) {
+        rootPath.push("/" + queryPath);
+    }
+    // return
+    var baseUrl = req.protocol + "://" + path.normalize(rootPath.join(""));
+    debug("getBaseUrl(): ", baseUrl);
+
+    return baseUrl;
+};
 module.exports = {
     name: "base",
     mixin: function(source, target) {
@@ -67,21 +93,18 @@ module.exports = {
      * @param {object} model
      */
     renderPageModel: function(req, res, tmpUrl, model) {
-        var rootPath = [req.protocol, "://", req.host.toString()];
-        if (config.port) {
-            rootPath.push(":" + config.port);
-        }
-        if (config.virtualDir) {
-            rootPath.push("/" + config.virtualDir);
-        }
         var pageModel = {
-            rootUrl: rootPath.join(""),
+            rootUrl: getBaseUrl(req),
             DEV: config.mode == "production" ? false : true
         };
         // new model.
         var newModel = _.extend(pageModel, model);
         // render template url.
         res.render(tmpUrl, newModel);
+    },
+    getBaseUrl: function(req, queryPath) {
+        // return
+        return getBaseUrl(req, queryPath);
     },
     dbRequestSuccess: function(result) {
         if (result.failed === true) {

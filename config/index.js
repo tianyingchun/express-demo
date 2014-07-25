@@ -67,7 +67,7 @@ var serverCfg = {
 };
 
 module.exports = function(mode) {
-    var env = 'production';
+    var env = 'local';
     var use = serverCfg[mode || process.argv[2] || env] || serverCfg[env];
     var use = _.extend(use, config, merchantCfg, qianbaoCfg[env]);
     return use;

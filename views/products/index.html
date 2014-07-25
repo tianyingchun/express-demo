@@ -141,7 +141,7 @@ $(function() {
             if (orderCfg.length) {
                 $.ajax({
                     type: "POST",
-                    url: "/api/order/create",
+                    url: "{{rootUrl}}/api/order/create",
                     data: JSON.stringify(orderCfg),
                     dataType: "json",
                     contentType: 'application/json',
@@ -168,7 +168,7 @@ $(function() {
     function placeOrderfrom1qianbao(orderId, totalAmount, callback) {
             $.ajax({
                 type: "POST",
-                url: "/api/order/1qianbao/placeorder",
+                url: "{{rootUrl}}/api/order/1qianbao/placeorder",
                 data: JSON.stringify({
                     orderId: orderId,
                     totalAmount: totalAmount
@@ -190,10 +190,10 @@ $(function() {
     function qrCode(transId) {
         $.ajax({
             type: "GET",
-            url: "/api/images/qrcode",
+            url: "{{rootUrl}}/api/images/qrcode",
             data: {
                 fileName: "testqr",
-                value: "https://test2-www.1qianbao.com:7443/cashier/" + transId
+                transId: transId
             },
             dataType: "json",
             success: function(result) {

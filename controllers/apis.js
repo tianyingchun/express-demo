@@ -87,16 +87,14 @@ router.get("/images/qrcode", function(req, res) {
     debug("query:", req.query);
 
     var fileName = req.query.fileName;
-    var value = req.query.value;
+    var transId = req.query.transId;
+    var value = config.cachier.replace("{transId}", transId);
     var qrCode = require("../helpers/utils").qrEncoder;
     qrCode(value, fileName, function(result) {
         if (base.dbRequestSuccess(result)) {
-            var rootPath = [req.protocol, "://", req.host.toString()];
-            if (config.port) {
-                rootPath.push(":" + config.port);
-            }
-            rootPath.push("/");
-            var filePath = rootPath.join("") + result.replace("public", "static");
+
+            // http qrcode url path.
+            var filePath = base.getBaseUrl(req, result.replace("public", "/static"));
 
             debug("qrCode Http url:", filePath);
             base.apiOkOutput(res, filePath);
@@ -108,7 +106,9 @@ router.get("/images/qrcode", function(req, res) {
 // for testing purpose,directly generate qrcode.
 router.get('/images/qrcode_directly', function(req, res) {
     var qr = require('qr-image');
-    var code = qr.image("https://test2-www.1qianbao.com:7443/cashier/00030003201407030000000002157857", {
+    var transId = req.query.transId;
+
+    var code = qr.image(config.cachier.replace("{transId}", transId), {
         type: 'png'
     });
     res.type('png');
