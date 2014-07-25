@@ -1,8 +1,8 @@
-{%- if DEV %} 
-    {% set baseurl = '/static' %} 
+{% if DEV %} 
+    {% set baseurl = rootUrl + '/static' %} 
 {% else %} 
-    {% set baseurl = '/static' %}
-{% endif -%}
+    {% set baseurl = rootUrl + '/static' %}
+{% endif %}
 <!doctype html>
 <html>
 

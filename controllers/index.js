@@ -17,7 +17,8 @@ router.get('/', function(req, res) {
     // list all products.
     productService.findAll(function(result) {
         if (base.dbRequestSuccess(result)) {
-            res.render('products/index', {
+            // render data to page.
+            base.getPageModel(req, res, 'products/index', {
                 products: result
             });
         } else {

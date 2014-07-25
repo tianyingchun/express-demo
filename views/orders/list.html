@@ -3,9 +3,9 @@
 <h1 class="header">
     <span class="title">当前的订单列表</span>
     <div class="button-list">
-        <input type="button" onclick="location.href='/product/list'" class="button list-all-products" value="查看所有产品">
+        <input type="button" onclick="location.href='{{rootUrl}}/product/list'" class="button list-all-products" value="查看所有产品">
 
-        <input type="button" onclick="location.href='/product/create'" class="button add-new-product" value="添加新产品">
+        <input type="button" onclick="location.href='{{rootUrl}}/product/create'" class="button add-new-product" value="添加新产品">
     </div>
 </h1>
 <div class="order-list">
@@ -25,7 +25,7 @@
                 {%if order.status =="initialize" %} 初始化 {% else %} {%if order.status =="paid" %} 已付款 {%else%} {%if order.status =="unpaid" %} 未支付 {%else%} {%if order.status =="failed" %} 下单失败 {%else%} 未知 {%endif%} {%endif%} {%endif%} {%endif%}
             </td>
             <!-- <td class="order-date">{{order.createDate}}</td> -->
-            <td class="order-detail"><a href="/order/detail/{{order.orderId}}">查看详情</a>
+            <td class="order-detail"><a href="{{rootUrl}}/order/detail/{{order.orderId}}">查看详情</a>
             </td>
 
         </tr>
